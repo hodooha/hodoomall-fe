@@ -2,11 +2,10 @@ import React, { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router";
 import { Col, Row } from "react-bootstrap";
 // import Sidebar from "../component/Sidebar";
-import Navbar from "../component/Navbar";
-import ToastMessage from "../component/ToastMessage";
+import Navbar from "../common/component/Navbar";
+import ToastMessage from "../common/component/ToastMessage";
 import { useDispatch, useSelector } from "react-redux";
-import { Outlet } from "react-router-dom";
-// import { userActions } from "../action/userAction";
+import { Outlet } from "react-router-dom"; 
 
 const AppLayout = ({ children }) => {
   const location = useLocation();
