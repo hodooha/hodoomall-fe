@@ -6,6 +6,7 @@ import AdminLayout from "./layout/AdminLayout";
 import Homepage from "./pages/Homepage/Homepage";
 import ProductsPage from "./pages/Products/ProductsPage";
 import ProductDetailPage from "./pages/ProductDetail/ProductDetailPage";
+import LoginPage from "./pages/LoginPage/LoginPage";
 import NotFoundPage from "./pages/NotFoundPages/NotFoundPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 
@@ -14,7 +15,7 @@ function App() {
     <Routes>
       <Route path="/" element={<AppLayout></AppLayout>}>
         <Route index element={<Homepage />} />
-        {/* <Route path="/login" element={<Login />} /> */}
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/products" element={<ProductsPage />}>
           <Route index element={<ProductsPage />} />

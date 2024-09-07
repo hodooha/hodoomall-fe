@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Container, Form, Button, Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router";
-// import { userActions } from "../action/userAction";
+import { registerUser } from "../../features/user/userSlice";
 import { ColorRing } from "react-loader-spinner";
 import "./RegisterPage.style.css";
 
@@ -18,9 +18,7 @@ const RegisterPage = () => {
   const navigate = useNavigate();
   const [passwordError, setPasswordError] = useState("");
   const [policyError, setPolicyError] = useState(false);
-//   const { loading, error } = useSelector((state) => state.user);
-  const loading = false;
-  const error = false;
+  const { loading, error } = useSelector((state) => state.user);
 
   const register = (event) => {
     event.preventDefault();
@@ -37,7 +35,7 @@ const RegisterPage = () => {
     }
     setPasswordError("");
     setPolicyError(false);
-    // dispatch(registerUser({ email, name, password, navigate }));
+    dispatch(registerUser({ email, name, password, navigate }));
   };
 
   const handleChange = (event) => {

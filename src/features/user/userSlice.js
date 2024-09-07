@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import api from ""
+import api from "../../utils/api";
+import { showToastMessage } from "../common/uiSlice";
 
 export const registerUser = createAsyncThunk(
   "user/registerUser",
@@ -13,11 +14,34 @@ export const registerUser = createAsyncThunk(
         name,
         password,
       });
-      dispatch(showToastMessage("회원가입을 완료했습니다.", "success"));
+      dispatch(
+        showToastMessage({
+          message: "회원가입을 완료했습니다.",
+          status: "success",
+        })
+      );
       navigate("/login");
       return response.data;
     } catch (error) {
-      dispatch(showToastMessage("회원가입에 실패했습니다.", "error"));
+      dispatch(
+        showToastMessage({
+          message: "회원가입에 실패했습니다.",
+          status: "error",
+        })
+      );
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
+export const loginWithEmail = createAsyncThunk(
+  "user/loginWithEmail",
+  async ({ email, password }, { rejectWithValue }) => {
+    try {
+      const response = await api.post("/auth/login", { email, password });
+
+      return response.data;
+    } catch (error) {
       return rejectWithValue(error.error);
     }
   }
@@ -30,10 +54,33 @@ const userSlice = createSlice({
     loading: false,
     user: null,
   },
-  reducers: {
-
+  reducers: {},
+  extraReducers: (builder) => {
+    builder
+      .addCase(registerUser.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(registerUser.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(registerUser.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(loginWithEmail.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(loginWithEmail.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload.user;
+        state.error = null;
+      })
+      .addCase(loginWithEmail.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      });
   },
-  extraReducers: {
-
-  }
 });
+
+export default userSlice.reducer;
