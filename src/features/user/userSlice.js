@@ -39,8 +39,22 @@ export const loginWithEmail = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await api.post("/auth/login", { email, password });
+      const { user, token } = response.data;
+      sessionStorage.setItem("token", token);
+      return user;
+    } catch (error) {
+      return rejectWithValue(error.error);
+    }
+  }
+);
 
-      return response.data;
+export const loginWithToken = createAsyncThunk(
+  "user/loginWithToken",
+  async (_, { rejectWithValue }) => {
+    try {
+      const response = await api.get("/users/me");
+      const { user } = response.data;
+      return user;
     } catch (error) {
       return rejectWithValue(error.error);
     }
@@ -73,10 +87,22 @@ const userSlice = createSlice({
       })
       .addCase(loginWithEmail.fulfilled, (state, action) => {
         state.loading = false;
-        state.user = action.payload.user;
+        state.user = action.payload;
         state.error = null;
       })
       .addCase(loginWithEmail.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(loginWithToken.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(loginWithToken.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.error = null;
+      })
+      .addCase(loginWithToken.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
