@@ -2,11 +2,11 @@ import React, { useState } from "react";
 import { Container, Form, Button, Alert } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, useNavigate } from "react-router-dom";
-// import { GoogleLogin } from "@react-oauth/google";
+import { GoogleLogin } from "@react-oauth/google";
 import { ColorRing } from "react-loader-spinner";
 import "../LoginPage/LoginPage.style.css";
 import { loginWithEmail } from "../../features/user/userSlice";
-// import loginWithGoogle from "../../features/user/userSlice";
+import loginWithGoogle from "../../features/user/userSlice";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -21,7 +21,7 @@ const LoginPage = () => {
   };
 
   const handleGoogleLogin = async (googleData) => {
-    //   dispatch(loginWithGoogle(googleData.credential));
+      dispatch(loginWithGoogle(googleData.credential));
   };
 
   if (user) {
@@ -81,12 +81,12 @@ const LoginPage = () => {
             </div>
           </div>
 
-          <div className="text-align-center mt-2">
+          <div className="text-center mt-2">
             <p>-외부 계정으로 로그인하기-</p>
             <div className="display-center">
-              {/* <GoogleLogin
+              <GoogleLogin
                   onSuccess={handleGoogleLogin}              
-                /> */}
+                />
             </div>
           </div>
         </Form>

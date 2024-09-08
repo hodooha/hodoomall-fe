@@ -1,5 +1,6 @@
+import "bootstrap/dist/css/bootstrap.min.css";
 import "./App.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
+import "./common/component/common.style.css";
 import { Routes, Route } from "react-router-dom";
 import AppLayout from "./layout/AppLayout";
 import AdminLayout from "./layout/AdminLayout";
