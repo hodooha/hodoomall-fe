@@ -68,7 +68,12 @@ const userSlice = createSlice({
     loading: false,
     user: null,
   },
-  reducers: {},
+  reducers: {
+    logout(state) {
+      sessionStorage.removeItem("token");
+      state.user = null;
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
@@ -104,9 +109,9 @@ const userSlice = createSlice({
       })
       .addCase(loginWithToken.rejected, (state, action) => {
         state.loading = false;
-        state.error = action.payload;
       });
   },
 });
 
+export const userActions = userSlice.actions;
 export default userSlice.reducer;

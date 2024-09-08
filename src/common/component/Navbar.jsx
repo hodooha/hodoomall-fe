@@ -10,7 +10,7 @@ import {
 import { Link, useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-// import { userActions } from "../action/userAction";
+import {userActions} from "../../features/user/userSlice";
 import EventPopup from "./EventPopup";
 
 const Navbar = ({ user }) => {
@@ -32,7 +32,7 @@ const Navbar = ({ user }) => {
     }
   };
   const logout = () => {
-    // dispatch(userActions.logout());
+    dispatch(userActions.logout());
   };
 
   const getProductListByCategory = (menu) => {
