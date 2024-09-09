@@ -5,8 +5,7 @@ import { Link, useNavigate } from "react-router-dom";
 import { GoogleLogin } from "@react-oauth/google";
 import { ColorRing } from "react-loader-spinner";
 import "../LoginPage/LoginPage.style.css";
-import { loginWithEmail } from "../../features/user/userSlice";
-import loginWithGoogle from "../../features/user/userSlice";
+import { loginWithEmail, loginWithGoogle } from "../../features/user/userSlice";
 
 const LoginPage = () => {
   const dispatch = useDispatch();
@@ -21,6 +20,7 @@ const LoginPage = () => {
   };
 
   const handleGoogleLogin = async (googleData) => {
+      console.log(googleData);
       dispatch(loginWithGoogle(googleData.credential));
   };
 

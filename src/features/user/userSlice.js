@@ -20,6 +20,7 @@ export const registerUser = createAsyncThunk(
           status: "success",
         })
       );
+      if (response.status !== 200) throw new Error(response.error);
       navigate("/login");
       return response.data;
     } catch (error) {
@@ -39,8 +40,9 @@ export const loginWithEmail = createAsyncThunk(
   async ({ email, password }, { rejectWithValue }) => {
     try {
       const response = await api.post("/auth/login", { email, password });
-      const { user, token } = response.data;
-      sessionStorage.setItem("token", token);
+      if (response.status !== 200) throw new Error(response.error);
+      const { user } = response.data;
+      sessionStorage.setItem("token", user.token);
       return user;
     } catch (error) {
       return rejectWithValue(error.error);
@@ -53,7 +55,23 @@ export const loginWithToken = createAsyncThunk(
   async (_, { rejectWithValue }) => {
     try {
       const response = await api.get("/users/me");
+      if (response.status !== 200) throw new Error(response.error);
       const { user } = response.data;
+      return user;
+    } catch (error) {
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
+export const loginWithGoogle = createAsyncThunk(
+  "user/loginWithGoogle",
+  async (token, { rejectWithValue }) => {
+    try {
+      const response = await api.post("/auth/google", { token });
+      if (response.status !== 200) throw new Error(response.error);
+      const { user } = response.data;
+      sessionStorage.setItem("token", user.token);
       return user;
     } catch (error) {
       return rejectWithValue(error.error);
@@ -107,8 +125,20 @@ const userSlice = createSlice({
         state.user = action.payload;
         state.error = null;
       })
-      .addCase(loginWithToken.rejected, (state, action) => {
+      .addCase(loginWithToken.rejected, (state) => {
         state.loading = false;
+      })
+      .addCase(loginWithGoogle.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(loginWithGoogle.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = action.payload;
+        state.error = null;
+      })
+      .addCase(loginWithGoogle.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
       });
   },
 });
