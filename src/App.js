@@ -10,6 +10,7 @@ import ProductDetailPage from "./pages/ProductDetail/ProductDetailPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import NotFoundPage from "./pages/NotFoundPages/NotFoundPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
+import AdminProduct from "./pages/AdminPages/AdminProduct";
 
 function App() {
   return (
@@ -23,7 +24,10 @@ function App() {
           <Route path=":id" element={<ProductDetailPage />} />
         </Route>
       </Route>
-      <Route path="/admin" element={<AdminLayout ></AdminLayout>}></Route>
+      <Route path="/admin" element={<AdminLayout />}>
+        <Route index element={<AdminProduct />}></Route>
+        <Route path="/admin/product" element={<AdminProduct />}></Route>
+      </Route>
       <Route path="*" element={<NotFoundPage></NotFoundPage>}></Route>
     </Routes>
   );

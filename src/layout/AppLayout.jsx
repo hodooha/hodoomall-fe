@@ -20,21 +20,13 @@ const AppLayout = ({ children }) => {
   return (
     <div>
       <ToastMessage />
-      {location.pathname.includes("admin") ? (
-        <Row className="vh-100">
-          <Col xs={12} md={3} className="sidebar mobile-sidebar">
-            {/* <Sidebar /> */}
-          </Col>
-          <Col xs={12} md={9}>
-            {children}
-          </Col>
-        </Row>
-      ) : (
+
+      
         <>
           <Navbar user={user} />
           {children}
         </>
-      )}
+
       <Outlet></Outlet>
     </div>
   );
