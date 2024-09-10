@@ -9,7 +9,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom"; 
 
 const AppLayout = ({ children }) => {
-  const location = useLocation();
   const dispatch = useDispatch();  
   const { user } = useSelector((state) => state.user);
 
@@ -20,13 +19,10 @@ const AppLayout = ({ children }) => {
   return (
     <div>
       <ToastMessage />
-
-      
         <>
           <Navbar user={user} />
-          {children}
+          {/* {children} */}
         </>
-
       <Outlet></Outlet>
     </div>
   );

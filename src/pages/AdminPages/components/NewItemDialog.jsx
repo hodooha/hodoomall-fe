@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Form, Modal, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import CloudinaryUploadWidget from "../../../utils/CloudinaryUploadWidget";
+import { createProduct } from "../../../features/product/productSlice";
 
 const CATEGORY = ["TOP", "OUTER", "ALL-IN-ONE", "ACC", "SET", "HOME"];
 const STATUS = ["active", "disactive"];
@@ -20,7 +21,7 @@ const InitialFormData = {
 const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
   // const { selectedProduct, error } = useSelector((state) => state.product);
   const selectedProduct = null;
-  const error = false; 
+  const error = ""; 
   
   const [formData, setFormData] = useState(
     mode === "new" ? { ...InitialFormData } : selectedProduct
@@ -40,10 +41,10 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
     const totalStock = stock.reduce((total, item) => {
       return { ...total, [item[0]]: parseInt(item[1]) };
     }, {});
-    if (mode === "new") {
-      // dispatch(
-      //   productActions.createProduct({ ...formData, stock: totalStock })
-      // );
+    if (mode === "new") {      
+      dispatch(
+        createProduct({ ...formData, stock: totalStock })
+      );
       setShowDialog(false);
     } else {
       // dispatch(

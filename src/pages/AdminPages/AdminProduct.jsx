@@ -7,6 +7,8 @@ import ReactPaginate from "react-paginate";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import ProductTable from "./components/ProductTable";
 import { ColorRing } from "react-loader-spinner";
+import "../AdminPages/AdminProduct.style.css";
+
 
 const AdminProduct = () => {
   const navigate = useNavigate();
@@ -17,7 +19,7 @@ const AdminProduct = () => {
   const productList = [];
   const totalPageNum = 10;
   const loading = false;
-  const error = false;
+  const error = null;
   
   const dispatch = useDispatch();
   const [showDialog, setShowDialog] = useState(false);

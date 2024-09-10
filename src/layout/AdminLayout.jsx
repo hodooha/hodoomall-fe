@@ -8,10 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Outlet } from "react-router-dom"; 
 
 const AdminAppLayout = ({ children }) => {
-
-  const location = useLocation();
   const dispatch = useDispatch();  
-  const { user } = useSelector((state) => state.user);
 
   useEffect(() => {
     dispatch(loginWithToken());
@@ -25,10 +22,11 @@ const AdminAppLayout = ({ children }) => {
           <Sidebar />
         </Col>
         <Col xs={12} md={9}>
-          {children}
+          {/* {children} */}
+          <Outlet></Outlet>
         </Col>
       </Row>
-      <Outlet></Outlet>
+      
     </div>
   );
 };

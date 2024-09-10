@@ -2,6 +2,12 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../utils/api";
 import { showToastMessage } from "../common/uiSlice";
 
+const initialState = {
+  error: "",
+  loading: false,
+  user: null,
+};
+
 export const registerUser = createAsyncThunk(
   "user/registerUser",
   async (
@@ -81,11 +87,7 @@ export const loginWithGoogle = createAsyncThunk(
 
 const userSlice = createSlice({
   name: "user",
-  initialState: {
-    error: null,
-    loading: false,
-    user: null,
-  },
+  initialState,
   reducers: {
     logout(state) {
       sessionStorage.removeItem("token");
