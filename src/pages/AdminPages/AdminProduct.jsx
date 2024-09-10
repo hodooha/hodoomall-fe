@@ -7,19 +7,16 @@ import ReactPaginate from "react-paginate";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import ProductTable from "./components/ProductTable";
 import { ColorRing } from "react-loader-spinner";
+import { getProductList } from "../../features/product/productSlice";
 import "../AdminPages/AdminProduct.style.css";
 
 
 const AdminProduct = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useSearchParams();
-//   const { productList, totalPageNum, loading, error } = useSelector(
-//     (state) => state.product
-//   );
-  const productList = [];
-  const totalPageNum = 10;
-  const loading = false;
-  const error = null;
+  const { productList, totalPageNum, loading, error } = useSelector(
+    (state) => state.product
+  );
   
   const dispatch = useDispatch();
   const [showDialog, setShowDialog] = useState(false);
@@ -41,7 +38,7 @@ const AdminProduct = () => {
   ];
 
   useEffect(() => {
-    // dispatch(getProductList({ ...searchQuery }));
+    dispatch(getProductList({ ...searchQuery }));
   }, [query]);
 
   useEffect(() => {
