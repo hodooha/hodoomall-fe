@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Container, Button, Alert } from "react-bootstrap";
-import SearchBox from "../../common/component/SearchBox"
+import SearchBox from "../../common/component/SearchBox";
 import { useDispatch, useSelector } from "react-redux";
 import NewItemDialog from "./components/NewItemDialog";
 import ReactPaginate from "react-paginate";
@@ -10,14 +10,13 @@ import { ColorRing } from "react-loader-spinner";
 import { getProductList } from "../../features/product/productSlice";
 import "../AdminPages/AdminProduct.style.css";
 
-
 const AdminProduct = () => {
   const navigate = useNavigate();
   const [query, setQuery] = useSearchParams();
   const { productList, totalPageNum, loading, error } = useSelector(
     (state) => state.product
   );
-  
+
   const dispatch = useDispatch();
   const [showDialog, setShowDialog] = useState(false);
   const [searchQuery, setSearchQuery] = useState({
@@ -110,6 +109,7 @@ const AdminProduct = () => {
             openEditForm={openEditForm}
           />
         )}
+    
         <ReactPaginate
           nextLabel="next >"
           onPageChange={handlePageClick}

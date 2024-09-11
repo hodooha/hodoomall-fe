@@ -1,6 +1,4 @@
 import React, { useEffect } from "react";
-import { useLocation, useNavigate } from "react-router";
-import { Col, Row } from "react-bootstrap";
 // import Sidebar from "../component/Sidebar";
 import Navbar from "../common/component/Navbar";
 import ToastMessage from "../common/component/ToastMessage";

@@ -6,7 +6,7 @@ const initialState = {
   loading: false,
   error: "",
   productList: [],
-  totalPageNum: 10,
+  totalPageNum: 1,
   selectedProduct: null,
 };
 
@@ -16,7 +16,7 @@ export const createProduct = createAsyncThunk(
     try {
       const response = await api.post("/products", formData);
       if (response.status !== 200) throw new Error(response.error);
-        dispatch(getProductList());
+      dispatch(getProductList());
       dispatch(
         showToastMessage({ message: "상품 생성 완료", status: "success" })
       );
@@ -32,10 +32,9 @@ export const getProductList = createAsyncThunk(
   "product/getProductList",
   async (query, { rejectWithValue }) => {
     try {
-      const response = await api.get("/products");
+      const response = await api.get("/products", { params: { ...query } });
       if (response.status !== 200) throw new Error(response.error);
-      const { productList } = response.data;
-      return productList;
+      return response.data;
     } catch (error) {
       return rejectWithValue(error.error);
     }
@@ -64,7 +63,8 @@ const productSlice = createSlice({
       })
       .addCase(getProductList.fulfilled, (state, action) => {
         state.loading = false;
-        state.productList = action.payload;
+        state.productList = action.payload.productList;
+        state.totalPageNum = action.payload.totalPageNum;
         state.error = null;
       })
       .addCase(getProductList.rejected, (state, action) => {
