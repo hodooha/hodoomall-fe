@@ -8,6 +8,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import ProductTable from "./components/ProductTable";
 import { ColorRing } from "react-loader-spinner";
 import { getProductList } from "../../features/product/productSlice";
+import { productActions } from "../../features/product/productSlice"; 
 import "../AdminPages/AdminProduct.style.css";
 
 const AdminProduct = () => {
@@ -56,7 +57,7 @@ const AdminProduct = () => {
   const openEditForm = (product) => {
     setMode("edit");
     setShowDialog(true);
-    // dispatch({ type: types.SET_SELECTED_PRODUCT, payload: product });
+    dispatch(productActions.setSelectedProduct(product));
   };
 
   const handleClickNewItem = () => {

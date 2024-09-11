@@ -41,10 +41,32 @@ export const getProductList = createAsyncThunk(
   }
 );
 
+export const editProduct = createAsyncThunk(
+  "product/editProduct",
+  async (formData , { dispatch, rejectWithValue }) => {
+    try {
+      console.log(formData);
+      const response = await api.put("/products", formData);
+      if (response.status !== 200) throw new Error(response.error);
+      dispatch(
+        showToastMessage({ message: "상품 수정 완료", status: "success" })
+      );
+      dispatch(getProductList({ name: "", page: 1 }));
+    } catch (error) {
+      dispatch(showToastMessage({ message: error.error, status: "error" }));
+      return error.error;
+    }
+  }
+);
+
 const productSlice = createSlice({
   name: "product",
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectedProduct(state, action){
+      state.selectedProduct = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(createProduct.pending, (state) => {
@@ -68,6 +90,17 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(getProductList.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(editProduct.pending, (state)=>{
+        state.loading = true;
+      })
+      .addCase(editProduct.fulfilled, (state, action) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(editProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });
