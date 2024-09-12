@@ -28,7 +28,7 @@ const Navbar = ({ user }) => {
       if (event.target.value === "") {
         return navigate("/");
       }
-      navigate(`/?name=${event.target.value}`);
+      navigate(`/product?name=${event.target.value}`);
     }
   };
   const logout = () => {
@@ -40,7 +40,7 @@ const Navbar = ({ user }) => {
     if (menu === "" || menu === "ALL") {
       return navigate("/");
     }
-    navigate(`/?category=${menu}`);
+    navigate(`/product?category=${menu}`);
     setValue("");
   };
 

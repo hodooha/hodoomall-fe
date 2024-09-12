@@ -76,6 +76,21 @@ export const deleteProduct = createAsyncThunk(
   }
 );
 
+export const getProductDetail = createAsyncThunk(
+  "product/getProductDetail",
+  async (id, {dispatch, rejectWithValue}) => {
+    try{
+      const response = await api.get(`/products/${id}`);
+      if (response.status !== 200) throw new Error(response.error);
+      return response.data;
+    }
+    catch(error){
+      return rejectWithValue(error.error);
+    }
+
+  }
+)
+
 const productSlice = createSlice({
   name: "product",
   initialState,
@@ -129,6 +144,18 @@ const productSlice = createSlice({
         state.error = null;
       })
       .addCase(deleteProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getProductDetail.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getProductDetail.fulfilled, (state, action) => {
+        state.loading = false;
+        state.selectedProduct = action.payload.product;
+        state.error = null;
+      })
+      .addCase(getProductDetail.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

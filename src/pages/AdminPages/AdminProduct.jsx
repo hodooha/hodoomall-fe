@@ -57,7 +57,6 @@ const AdminProduct = () => {
   const deleteItem = (id) => {
     Swal.fire({
       title: "정말 삭제하시겠습니까?",
-      // text: "You won't be able to revert this!",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",

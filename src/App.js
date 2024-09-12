@@ -16,12 +16,12 @@ function App() {
   return (
     <Routes>
       <Route path="/" element={<AppLayout></AppLayout>}>
-        <Route index element={<Homepage />} />
+        <Route index element={<ProductsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/products" element={<ProductsPage />}>
+        <Route path="/product" >
           <Route index element={<ProductsPage />} />
-          <Route path=":id" element={<ProductDetailPage />} />
+          <Route path="/product/:id" element={<ProductDetailPage />} />
         </Route>
       </Route>
       <Route path="/admin" element={<AdminLayout />}>
