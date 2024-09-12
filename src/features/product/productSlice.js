@@ -43,7 +43,7 @@ export const getProductList = createAsyncThunk(
 
 export const editProduct = createAsyncThunk(
   "product/editProduct",
-  async (formData , { dispatch, rejectWithValue }) => {
+  async (formData, { dispatch, rejectWithValue }) => {
     try {
       console.log(formData);
       const response = await api.put("/products", formData);
@@ -52,9 +52,26 @@ export const editProduct = createAsyncThunk(
         showToastMessage({ message: "상품 수정 완료", status: "success" })
       );
       dispatch(getProductList());
+      return response.data;
     } catch (error) {
       dispatch(showToastMessage({ message: error.error, status: "error" }));
-      return error.error;
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
+export const deleteProduct = createAsyncThunk(
+  "product/deleteProduct",
+  async (id, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.delete(`/products/${id}`);
+      if(response.status !== 200) throw new Error(response.error);
+      dispatch(showToastMessage({message: "상품 삭제 완료", status: "success"}));
+      dispatch(getProductList());
+      return response.data;
+    } catch (error) {
+      dispatch(showToastMessage({ message: error.error, status: "error" }));
+      return rejectWithValue(error.error);
     }
   }
 );
@@ -63,9 +80,9 @@ const productSlice = createSlice({
   name: "product",
   initialState,
   reducers: {
-    setSelectedProduct(state, action){
+    setSelectedProduct(state, action) {
       state.selectedProduct = action.payload;
-    }
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -93,14 +110,25 @@ const productSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(editProduct.pending, (state)=>{
+      .addCase(editProduct.pending, (state) => {
         state.loading = true;
       })
-      .addCase(editProduct.fulfilled, (state, action) => {
+      .addCase(editProduct.fulfilled, (state) => {
         state.loading = false;
         state.error = null;
       })
       .addCase(editProduct.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(deleteProduct.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteProduct.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(deleteProduct.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

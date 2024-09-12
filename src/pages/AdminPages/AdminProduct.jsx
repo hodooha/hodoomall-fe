@@ -7,8 +7,12 @@ import ReactPaginate from "react-paginate";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import ProductTable from "./components/ProductTable";
 import { ColorRing } from "react-loader-spinner";
-import { getProductList } from "../../features/product/productSlice";
-import { productActions } from "../../features/product/productSlice"; 
+import {
+  getProductList,
+  deleteProduct,
+  productActions,
+} from "../../features/product/productSlice";
+import Swal from 'sweetalert2';
 import "../AdminPages/AdminProduct.style.css";
 
 const AdminProduct = () => {
@@ -51,7 +55,21 @@ const AdminProduct = () => {
   }, [searchQuery]);
 
   const deleteItem = (id) => {
-    // dispatch(deleteProduct(id));
+    Swal.fire({
+      title: "정말 삭제하시겠습니까?",
+      // text: "You won't be able to revert this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonColor: "#3085d6",
+      cancelButtonColor: "#d33",
+      confirmButtonText: "삭제",
+      cancelButtonText: "취소"
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deleteProduct(id));
+      }
+    });
+    
   };
 
   const openEditForm = (product) => {
@@ -110,7 +128,7 @@ const AdminProduct = () => {
             openEditForm={openEditForm}
           />
         )}
-    
+
         <ReactPaginate
           nextLabel="next >"
           onPageChange={handlePageClick}

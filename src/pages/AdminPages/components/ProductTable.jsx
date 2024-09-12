@@ -2,6 +2,7 @@ import React from "react";
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import { currencyFormat } from "../../../utils/number";
+
 const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
   return (
     <div className="overflow-x">
@@ -33,14 +34,13 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
                 </th>
                 <th>{item.status}</th>
                 <th style={{ minWidth: "100px" }}>
+                  
                   <Button
                     size="sm"
                     variant="danger"
-                    onClick={() => deleteItem(item._id)}
+                    onClick={() => deleteItem(item.id)}
                     className="mr-1"
-                  >
-                    -
-                  </Button>
+                  >-</Button>
                   <Button size="sm" onClick={() => openEditForm(item)}>
                     Edit
                   </Button>
@@ -48,7 +48,9 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
               </tr>
             ))
           ) : (
-            <tr>No Data to show</tr>
+            <tr>
+              <td>No Data to show</td>
+            </tr>
           )}
         </tbody>
       </Table>
