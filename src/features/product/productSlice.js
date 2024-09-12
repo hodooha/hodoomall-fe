@@ -51,7 +51,7 @@ export const editProduct = createAsyncThunk(
       dispatch(
         showToastMessage({ message: "상품 수정 완료", status: "success" })
       );
-      dispatch(getProductList({ name: "", page: 1 }));
+      dispatch(getProductList());
     } catch (error) {
       dispatch(showToastMessage({ message: error.error, status: "error" }));
       return error.error;
