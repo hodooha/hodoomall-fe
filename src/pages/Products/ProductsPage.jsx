@@ -1,16 +1,26 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ProductCard from "./components/ProductCard";
 import { Row, Col, Container, Alert } from "react-bootstrap";
 import { useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductList } from "../../features/product/productSlice";
 import { ColorRing } from "react-loader-spinner";
+import ReactPaginate from "react-paginate";
 
 
 const ProductsPage = () => {
   const dispatch = useDispatch();
   const [query, setQuery] = useSearchParams();
-  const { productList, error, loading } = useSelector((state) => state.product);
+  const { productList, error, loading, totalPageNum } = useSelector((state) => state.product);
+  const [searchQuery, setSearchQuery] = useState({
+    page: query.get("page") || 1,
+    name: query.get("name") || "",
+  });
+
+  const handlePageClick = ({ selected }) => {
+    setSearchQuery({ ...searchQuery, page: selected + 1 });
+    // dispatch(getProductList({ ...searchQuery }));
+  };
 
   useEffect(() => {
     dispatch(
@@ -45,12 +55,33 @@ const ProductsPage = () => {
         ) : (
           <Row>
             {productList.map((i) => (
-              <Col md={3} sm={12}>
+              <Col key={i.id} md={3} sm={12}>
                 <ProductCard item={i} />
               </Col>
             ))}
           </Row>
         )}
+        <ReactPaginate
+          nextLabel="next >"
+          onPageChange={handlePageClick}
+          pageRangeDisplayed={5}
+          pageCount={totalPageNum}
+          forcePage={searchQuery.page - 1}
+          previousLabel="< previous"
+          renderOnZeroPageCount={null}
+          pageClassName="page-item"
+          pageLinkClassName="page-link"
+          previousClassName="page-item"
+          previousLinkClassName="page-link"
+          nextClassName="page-item"
+          nextLinkClassName="page-link"
+          breakLabel="..."
+          breakClassName="page-item"
+          breakLinkClassName="page-link"
+          containerClassName="pagination"
+          activeClassName="active"
+          className="display-center list-style-none"
+        />
       </Container>
   );
 };

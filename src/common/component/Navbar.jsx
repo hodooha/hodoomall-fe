@@ -10,15 +10,15 @@ import {
 import { Link, useSearchParams } from "react-router-dom";
 import { useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import {userActions} from "../../features/user/userSlice";
+import { userActions } from "../../features/user/userSlice";
 import EventPopup from "./EventPopup";
 
 const Navbar = ({ user }) => {
   const dispatch = useDispatch();
   const [query, setQuery] = useSearchParams();
   const [value, setValue] = useState("");
-  const [activeBtn, setActiveBtn] = useState(query.get("category") || "");
-//   const { cartItemCount } = useSelector((state) => state.cart);
+  const [activeBtn, setActiveBtn] = useState(query.get("category" || "ALL"));
+  const { cartItemCount } = useSelector((state) => state.cart);
   const [showSearchBox, setShowSearchBox] = useState(false);
   const menuList = ["ALL", "TOP", "OUTER", "ALL-IN-ONE", "ACC", "SET", "HOME"];
   let [width, setWidth] = useState(0);
@@ -33,6 +33,7 @@ const Navbar = ({ user }) => {
   };
   const logout = () => {
     dispatch(userActions.logout());
+    navigate("/");
   };
 
   const getProductListByCategory = (menu) => {
@@ -49,7 +50,7 @@ const Navbar = ({ user }) => {
   };
 
   useEffect(() => {
-    setActiveBtn(query.get("category") || "");
+    setActiveBtn(query.get("category") || "ALL");
   }, [query]);
 
   return (
@@ -136,10 +137,10 @@ const Navbar = ({ user }) => {
             >
               <FontAwesomeIcon icon={faShoppingBag} />
 
-              {/* <span
+              <span
                 className="mobile-hide"
                 style={{ cursor: "pointer" }}
-              >{`카트(${user ? cartItemCount : 0})`}</span> */}
+              >{`카트(${user ? cartItemCount : 0})`}</span>
             </div>
             <div
               onClick={() => {

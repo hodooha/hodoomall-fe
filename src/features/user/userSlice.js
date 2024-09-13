@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../utils/api";
 import { showToastMessage } from "../common/uiSlice";
+import { cartActions, getCartQty } from "../cart/cartSlice";
 
 const initialState = {
   error: "",
@@ -43,12 +44,13 @@ export const registerUser = createAsyncThunk(
 
 export const loginWithEmail = createAsyncThunk(
   "user/loginWithEmail",
-  async ({ email, password }, { rejectWithValue }) => {
+  async ({ email, password }, { dispatch, rejectWithValue }) => {
     try {
       const response = await api.post("/auth/login", { email, password });
       if (response.status !== 200) throw new Error(response.error);
       const { user } = response.data;
       sessionStorage.setItem("token", user.token);
+      dispatch(getCartQty());
       return user;
     } catch (error) {
       return rejectWithValue(error.error);
@@ -58,11 +60,12 @@ export const loginWithEmail = createAsyncThunk(
 
 export const loginWithToken = createAsyncThunk(
   "user/loginWithToken",
-  async (_, { rejectWithValue }) => {
+  async (_, { dispatch, rejectWithValue }) => {
     try {
       const response = await api.get("/users/me");
       if (response.status !== 200) throw new Error(response.error);
       const { user } = response.data;
+      dispatch(getCartQty());
       return user;
     } catch (error) {
       return rejectWithValue(error.error);
@@ -72,12 +75,13 @@ export const loginWithToken = createAsyncThunk(
 
 export const loginWithGoogle = createAsyncThunk(
   "user/loginWithGoogle",
-  async (token, { rejectWithValue }) => {
+  async (token, { dispatch, rejectWithValue }) => {
     try {
       const response = await api.post("/auth/google", { token });
       if (response.status !== 200) throw new Error(response.error);
       const { user } = response.data;
       sessionStorage.setItem("token", user.token);
+      dispatch(getCartQty());
       return user;
     } catch (error) {
       return rejectWithValue(error.error);
@@ -85,13 +89,20 @@ export const loginWithGoogle = createAsyncThunk(
   }
 );
 
+export const logout = createAsyncThunk(
+  "user/logout",
+  (_, dispatch) => {
+    sessionStorage.removeItem("token");
+    dispatch(getCartQty());
+  }
+)
+
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
     logout(state) {
-      sessionStorage.removeItem("token");
-      state.user = null;
+      state.user = null;  
     },
   },
   extraReducers: (builder) => {

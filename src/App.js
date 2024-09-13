@@ -11,6 +11,7 @@ import LoginPage from "./pages/LoginPage/LoginPage";
 import NotFoundPage from "./pages/NotFoundPages/NotFoundPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import AdminProduct from "./pages/AdminPages/AdminProduct";
+import CartPage from "./pages/CartPage/CartPage";
 
 function App() {
   return (
@@ -23,6 +24,7 @@ function App() {
           <Route index element={<ProductsPage />} />
           <Route path="/product/:id" element={<ProductDetailPage />} />
         </Route>
+        <Route path="/cart" element={<CartPage></CartPage>}></Route>
       </Route>
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminProduct />}></Route>

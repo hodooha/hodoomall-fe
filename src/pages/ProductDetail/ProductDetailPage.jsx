@@ -86,6 +86,7 @@ const ProductDetailPage = () => {
               {Object.keys(selectedProduct.stock).length > 0 &&
                 Object.keys(selectedProduct.stock).map((size) => (
                   <Dropdown.Item
+                    key={size}
                     eventKey={size.toUpperCase()}
                     disabled={selectedProduct.stock[size] === 0 ? true : false}
                   >
