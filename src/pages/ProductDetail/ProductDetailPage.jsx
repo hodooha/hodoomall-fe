@@ -4,7 +4,7 @@ import { Container, Row, Col, Button, Dropdown } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { ColorRing } from "react-loader-spinner";
 import { getProductDetail } from "../../features/product/productSlice";
-// import { cartActions } from "../action/cartAction";
+import { addToCart } from "../../features/cart/cartSlice";
 import { currencyFormat } from "../../utils/number"; 
 import "./ProductDetailPage.style.css";
 
@@ -28,7 +28,7 @@ const ProductDetailPage = () => {
       navigate("/login");
       return;
     }
-    // dispatch(addToCart({ id, size }));
+    dispatch(addToCart({ id, size }));
   };
   const selectSize = (value) => {
     setSize(value);

@@ -1,5 +1,6 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import api from "../../utils/api";
+import { showToastMessage } from "../common/uiSlice";
 
 const initialState = {
   loading: false,
@@ -28,6 +29,41 @@ export const getCartQty = createAsyncThunk(
     try {
       const response = await api.get("/cart/qty");
       if (response.status !== 200) throw new Error(response.error);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
+export const addToCart = createAsyncThunk(
+  "cart/addToCart",
+  async (item, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.post("/cart", item);
+      if (response.status !== 200) throw new Error(response.error);
+      dispatch(
+        showToastMessage({
+          message: "카트에 상품 추가 완료",
+          status: "success",
+        })
+      );
+      dispatch(getCartQty());
+      return response.data;
+    } catch (error) {
+      dispatch(showToastMessage({ message: error.error, status: "error" }));
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
+export const updateQty = createAsyncThunk(
+  "cart/updateQty",
+  async (item, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.put("/cart", item);
+      if (response.status !== 200) throw new Error(response.error);
+      dispatch(getCartList());
       return response.data;
     } catch (error) {
       return rejectWithValue(error.error);
@@ -64,6 +100,28 @@ const cartSlice = createSlice({
         state.error = null;
       })
       .addCase(getCartQty.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(addToCart.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(addToCart.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(addToCart.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(updateQty.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(updateQty.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(updateQty.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

@@ -3,7 +3,7 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch } from "react-redux";
-
+import { getCartList, updateQty } from "../../../features/cart/cartSlice";
 import { currencyFormat } from "../../../utils/number";
 
 const CartProductCard = ({ item }) => {
@@ -12,7 +12,7 @@ const CartProductCard = ({ item }) => {
 
   const handleQtyChange = (value) => {
     setQty(value);
-    // dispatch(updateQty(item.productId._id, item.size, value));
+    dispatch(updateQty({ id: item.productId.id, size: item.size, qty: value }));
   };
 
   const deleteCart = (item) => {
