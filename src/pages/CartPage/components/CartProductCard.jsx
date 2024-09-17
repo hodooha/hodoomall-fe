@@ -3,20 +3,18 @@ import { faTrash } from "@fortawesome/free-solid-svg-icons";
 import { Row, Col, Form } from "react-bootstrap";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch } from "react-redux";
-import { getCartList, updateQty } from "../../../features/cart/cartSlice";
+import { updateQty, deleteCartItem } from "../../../features/cart/cartSlice";
 import { currencyFormat } from "../../../utils/number";
 
 const CartProductCard = ({ item }) => {
   const dispatch = useDispatch();
-  const [qty, setQty] = useState(item.qty);
 
   const handleQtyChange = (value) => {
-    setQty(value);
     dispatch(updateQty({ id: item.productId.id, size: item.size, qty: value }));
   };
 
   const deleteCart = (item) => {
-    // dispatch(deleteCartItem(item._id));
+    dispatch(deleteCartItem(item.productId.id));
   };
 
   return (
@@ -41,14 +39,14 @@ const CartProductCard = ({ item }) => {
             <strong>₩ {currencyFormat(item.productId.price)}</strong>
           </div>
           <div>Size: {item.size}</div>
-          <div>Total: ₩ {currencyFormat(item.productId.price * qty)}</div>
+          <div>Total: ₩ {currencyFormat(item.productId.price * item.qty)}</div>
           <div>
             Quantity:
             <Form.Select
               onChange={(event) => handleQtyChange(event.target.value)}
               required
               className="qty-dropdown"
-              value={qty}
+              defaultValue={item.qty}
             >
               <option value={1}>1</option>
               <option value={2}>2</option>
