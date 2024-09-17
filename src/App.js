@@ -8,10 +8,11 @@ import Homepage from "./pages/Homepage/Homepage";
 import ProductsPage from "./pages/Products/ProductsPage";
 import ProductDetailPage from "./pages/ProductDetail/ProductDetailPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
-import NotFoundPage from "./pages/NotFoundPages/NotFoundPage";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import AdminProduct from "./pages/AdminPages/AdminProduct";
 import CartPage from "./pages/CartPage/CartPage";
+import PaymentPage from "./pages/PaymentPage/PaymentPage";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
           <Route path="/product/:id" element={<ProductDetailPage />} />
         </Route>
         <Route path="/cart" element={<CartPage></CartPage>}></Route>
+        <Route path="/payment" element={<PaymentPage />} />
       </Route>
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminProduct />}></Route>

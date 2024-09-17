@@ -4,7 +4,7 @@ import { Container, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { ColorRing } from "react-loader-spinner";
 import CartProductCard from "./components/CartProductCard";
-import OrderReceipt from "./components/OrderReceipt";
+import OrderReceipt from "../../common/component/OrderReceipt";
 import { getCartList } from "../../features/cart/cartSlice";
 import "./CartPage.style.css";
 

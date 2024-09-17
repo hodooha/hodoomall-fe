@@ -2,7 +2,7 @@ import React from "react";
 import { Button } from "react-bootstrap";
 import { useNavigate } from "react-router";
 import { useLocation } from "react-router-dom";
-import { currencyFormat } from "../../../utils/number";
+import { currencyFormat } from "../../utils/number";
 
 const OrderReceipt = ({ cartList, totalPrice, dcPrice }) => {
   const location = useLocation();
