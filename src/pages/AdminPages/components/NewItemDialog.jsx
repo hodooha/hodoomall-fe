@@ -185,7 +185,7 @@ const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {
                     required
                     defaultValue={item[0] ? item[0].toLowerCase() : ""}
                   >
-                    <option value="" disabled selected hidden>
+                    <option value="" disabled hidden>
                       Please Choose...
                     </option>
                     {SIZE.map((item, index) => (

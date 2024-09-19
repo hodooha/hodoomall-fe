@@ -13,6 +13,9 @@ import RegisterPage from "./pages/RegisterPage/RegisterPage";
 import AdminProduct from "./pages/AdminPages/AdminProduct";
 import CartPage from "./pages/CartPage/CartPage";
 import PaymentPage from "./pages/PaymentPage/PaymentPage";
+import OrderCompletePage from "./pages/PaymentPage/OrderCompletePage";
+import MyPage from "./pages/MyPage/MyPage";
+import AdminOrderPage from "./pages/AdminPages/AdminOrderPage";
 
 function App() {
   return (
@@ -21,16 +24,21 @@ function App() {
         <Route index element={<ProductsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
-        <Route path="/product" >
+        <Route path="/product">
           <Route index element={<ProductsPage />} />
           <Route path="/product/:id" element={<ProductDetailPage />} />
         </Route>
         <Route path="/cart" element={<CartPage></CartPage>}></Route>
-        <Route path="/payment" element={<PaymentPage />} />
+        <Route path="/payment">
+          <Route index element={<PaymentPage />} />
+          <Route path="/payment/success" element={<OrderCompletePage />} />
+        </Route>
+        <Route path="/my/purchase" element={<MyPage />} />
       </Route>
       <Route path="/admin" element={<AdminLayout />}>
         <Route index element={<AdminProduct />}></Route>
         <Route path="/admin/product" element={<AdminProduct />}></Route>
+        <Route path="/admin/order" element={<AdminOrderPage />}></Route>
       </Route>
       <Route path="*" element={<NotFoundPage></NotFoundPage>}></Route>
     </Routes>

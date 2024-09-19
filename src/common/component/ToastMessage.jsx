@@ -18,7 +18,7 @@ const ToastMessage = () => {
   return (
     <ToastContainer
       position="top-right"
-      autoClose={500}
+      autoClose={1000}
       hideProgressBar={false}
       newestOnTop={false}
       closeOnClick

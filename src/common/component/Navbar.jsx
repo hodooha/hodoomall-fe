@@ -26,22 +26,22 @@ const Navbar = ({ user }) => {
   const onCheckEnter = (event) => {
     if (event.key === "Enter") {
       if (event.target.value === "") {
-        return navigate("/");
+        return navigate("/product");
       }
-      navigate(`/product?name=${event.target.value}`);
+      navigate(`/product?name=${event.target.value}&page=1`);
     }
   };
   const logout = () => {
     dispatch(userActions.logout());
-    navigate("/");
+    navigate("/product");
   };
 
   const getProductListByCategory = (menu) => {
     setActiveBtn(menu);
     if (menu === "" || menu === "ALL") {
-      return navigate("/");
+      return navigate("/product");
     }
-    navigate(`/product?category=${menu}`);
+    navigate(`/product?category=${menu}&page=1`);
     setValue("");
   };
 
@@ -144,7 +144,7 @@ const Navbar = ({ user }) => {
             </div>
             <div
               onClick={() => {
-                navigate("/account/purchase");
+                navigate("/my/purchase");
                 setActiveBtn("");
               }}
               className="nav-icon"

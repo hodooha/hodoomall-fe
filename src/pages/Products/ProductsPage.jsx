@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import ProductCard from "./components/ProductCard";
 import { Row, Col, Container, Alert } from "react-bootstrap";
-import { useSearchParams } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { getProductList } from "../../features/product/productSlice";
 import { ColorRing } from "react-loader-spinner";
@@ -10,11 +10,13 @@ import ReactPaginate from "react-paginate";
 
 const ProductsPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const [query, setQuery] = useSearchParams();
   const { productList, error, loading, totalPageNum } = useSelector((state) => state.product);
   const [searchQuery, setSearchQuery] = useState({
     page: query.get("page") || 1,
     name: query.get("name") || "",
+    category: query.get("category") || ""
   });
 
   const handlePageClick = ({ selected }) => {
@@ -22,11 +24,13 @@ const ProductsPage = () => {
     // dispatch(getProductList({ ...searchQuery }));
   };
 
+
   useEffect(() => {
     dispatch(
       getProductList({
-        name: query.get("name"),
-        category: query.get("category"),
+        page: query.get("page") || 1,
+        name: query.get("name") || "",
+        category: query.get("category") || "",
         pageSize: 20
       })
     );
