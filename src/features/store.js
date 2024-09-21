@@ -4,6 +4,7 @@ import uiSlice from "./common/uiSlice";
 import productSlice from "./product/productSlice";
 import cartSlice from "./cart/cartSlice";
 import orderSlice from "./order/orderSlice";
+import couponSlice from "./coupon/couponSlice";
 
 const store = configureStore({
   reducer: {
@@ -11,7 +12,8 @@ const store = configureStore({
     ui: uiSlice,
     product: productSlice,
     cart: cartSlice,
-    order: orderSlice
+    order: orderSlice,
+    coupon: couponSlice
   },
 });
 

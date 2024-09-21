@@ -16,6 +16,7 @@ import PaymentPage from "./pages/PaymentPage/PaymentPage";
 import OrderCompletePage from "./pages/PaymentPage/OrderCompletePage";
 import MyPage from "./pages/MyPage/MyPage";
 import AdminOrderPage from "./pages/AdminPages/AdminOrderPage";
+import AdminCouponPage from "./pages/AdminPages/AdminCouponPage";
 
 function App() {
   return (
@@ -39,6 +40,7 @@ function App() {
         <Route index element={<AdminProduct />}></Route>
         <Route path="/admin/product" element={<AdminProduct />}></Route>
         <Route path="/admin/order" element={<AdminOrderPage />}></Route>
+        <Route path="/admin/coupon" element={<AdminCouponPage />}></Route>
       </Route>
       <Route path="*" element={<NotFoundPage></NotFoundPage>}></Route>
     </Routes>

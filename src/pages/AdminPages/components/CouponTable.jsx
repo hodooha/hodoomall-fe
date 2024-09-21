@@ -1,9 +1,9 @@
-import React from "react";
+import React from 'react'
 import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import { currencyFormat } from "../../../utils/number";
 
-const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
+const CouponTable = ({ header, data, openEditForm, deleteCoupon }) => {
   return (
     <div className="overflow-x">
       <Table striped bordered hover>
@@ -19,26 +19,17 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
             data.map((item, index) => (
               <tr key={index}>
                 <th>{index}</th>
-                <th>{item.sku}</th>
+                <th>{item.id}</th>
                 <th style={{ minWidth: "100px" }}>{item.name}</th>
-                <th>{currencyFormat(item.price)}</th>
-                <th>
-                  {Object.keys(item.stock).map((size, index) => (
-                    <div key={index}>
-                      {size}:{item.stock[size]}
-                    </div>
-                  ))}
-                </th>
-                <th>
-                  <img src={item.image} width={100} alt="image" />
-                </th>
-                <th>{item.status}</th>
-                <th style={{ minWidth: "100px" }}>
-                  
+                <th>{item.description}</th>
+                <th>{item.dcRate}(%)</th>              
+                <th>{currencyFormat(item.minCost)}</th>
+                <th>{item.expiryDate}</th>
+                <th style={{ minWidth: "100px" }}>                  
                   <Button
                     size="sm"
                     variant="danger"
-                    onClick={() => deleteItem(item.id)}
+                    onClick={() => deleteCoupon(item.id)}
                     className="mr-1"
                   >-</Button>
                   <Button size="sm" onClick={() => openEditForm(item)}>
@@ -48,11 +39,14 @@ const ProductTable = ({ header, data, deleteItem, openEditForm }) => {
               </tr>
             ))
           ) : (
-            <td colSpan={header.length} className='text-align-center'>No Data to show</td>
+            <td colSpan={header.length} className='text-align-center'>
+             No Data to show
+            </td>
           )}
         </tbody>
       </Table>
     </div>
-  );
-};
-export default ProductTable;
+  )
+}
+
+export default CouponTable
