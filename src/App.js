@@ -10,13 +10,15 @@ import ProductDetailPage from "./pages/ProductDetail/ProductDetailPage";
 import LoginPage from "./pages/LoginPage/LoginPage";
 import NotFoundPage from "./pages/NotFoundPage/NotFoundPage";
 import RegisterPage from "./pages/RegisterPage/RegisterPage";
-import AdminProduct from "./pages/AdminPages/AdminProduct";
+import AdminProductPage from "./pages/AdminPages/AdminProductPage";
 import CartPage from "./pages/CartPage/CartPage";
 import PaymentPage from "./pages/PaymentPage/PaymentPage";
 import OrderCompletePage from "./pages/PaymentPage/OrderCompletePage";
 import MyPage from "./pages/MyPage/MyPage";
 import AdminOrderPage from "./pages/AdminPages/AdminOrderPage";
 import AdminCouponPage from "./pages/AdminPages/AdminCouponPage";
+import CouponsPage from "./pages/EventPage/CouponsPage";
+import CouponPage from "./pages/EventPage/CouponPage";
 
 function App() {
   return (
@@ -25,6 +27,10 @@ function App() {
         <Route index element={<ProductsPage />} />
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
+        <Route path="/coupons">
+          <Route index element={<CouponsPage />} />
+          <Route path="/coupons/:id" element={<CouponPage />} />
+        </Route>
         <Route path="/product">
           <Route index element={<ProductsPage />} />
           <Route path="/product/:id" element={<ProductDetailPage />} />
@@ -37,8 +43,8 @@ function App() {
         <Route path="/my/purchase" element={<MyPage />} />
       </Route>
       <Route path="/admin" element={<AdminLayout />}>
-        <Route index element={<AdminProduct />}></Route>
-        <Route path="/admin/product" element={<AdminProduct />}></Route>
+        <Route index element={<AdminProductPage />}></Route>
+        <Route path="/admin/product" element={<AdminProductPage />}></Route>
         <Route path="/admin/order" element={<AdminOrderPage />}></Route>
         <Route path="/admin/coupon" element={<AdminCouponPage />}></Route>
       </Route>

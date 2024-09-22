@@ -6,7 +6,7 @@ import ReactPaginate from "react-paginate";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import CouponTable from "./components/CouponTable";
 import { ColorRing } from "react-loader-spinner";
-import { getCouponList } from "../../features/coupon/couponSlice";
+import { couponActions, getCouponList, deleteCoupon } from "../../features/coupon/couponSlice";
 import Swal from 'sweetalert2';
 import NewCouponDialog from "./components/NewCouponDialog";
 
@@ -18,6 +18,7 @@ const AdminCouponPage = () => {
   const [searchQuery, setSearchQuery] = useState({
     page: query.get("page") || 1,
     couponNum: query.get("couponNum") || "",
+    couponName: query.get("couponName") || ""
   });
   const [mode, setMode] = useState("new");
   const [open, setOpen] = useState(false);
@@ -30,17 +31,20 @@ const AdminCouponPage = () => {
     "Description",
     "DCRate",
     "Minimum cost",
-    "ExpiryDate",
+    "Duration",
     ""
   ];
 
   useEffect(() => {
-    // dispatch();
+    dispatch(getCouponList({...searchQuery}));
   }, [query]);
 
   useEffect(() => {
     if (searchQuery.couponNum === "") {
       delete searchQuery.couponNum;
+    }
+    if (searchQuery.couponName === "") {
+      delete searchQuery.couponName;
     }
     const params = new URLSearchParams(searchQuery);
     const queryString = params.toString();
@@ -48,17 +52,14 @@ const AdminCouponPage = () => {
     navigate("?" + queryString);
   }, [searchQuery]);
 
-  const openEditForm = (order) => {
-    setOpen(true);
-    // dispatch();
+  const openEditForm = (coupon) => {
+    setMode("edit");
+    setShowDialog(true);
+    dispatch(couponActions.setSelectedCoupon(coupon));
   };
 
   const handlePageClick = ({ selected }) => {
     setSearchQuery({ ...searchQuery, page: selected + 1 });
-  };
-
-  const handleClose = () => {
-    setOpen(false);
   };
 
   const handleClickNewCoupon = () => {
@@ -66,7 +67,7 @@ const AdminCouponPage = () => {
     setShowDialog(true);
   };
 
-  const deleteCoupon = (id) => {
+  const handleDeleteCoupon = (id) => {
     Swal.fire({
       title: "정말 삭제하시겠습니까?",
       icon: "warning",
@@ -77,7 +78,7 @@ const AdminCouponPage = () => {
       cancelButtonText: "취소"
     }).then((result) => {
       if (result.isConfirmed) {
-        // dispatch(deleteCoupon(id));
+        dispatch(deleteCoupon(id));
       }
     });
     
@@ -120,7 +121,7 @@ const AdminCouponPage = () => {
             header={tableHeader}
             data={couponList}
             openEditForm={openEditForm}
-            deleteCoupon={deleteCoupon}
+            deleteCoupon={handleDeleteCoupon}
           />
         )}
 

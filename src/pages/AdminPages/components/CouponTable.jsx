@@ -15,7 +15,7 @@ const CouponTable = ({ header, data, openEditForm, deleteCoupon }) => {
           </tr>
         </thead>
         <tbody>
-          {data.length > 0 ? (
+          {data && data.length > 0 ? (
             data.map((item, index) => (
               <tr key={index}>
                 <th>{index}</th>
@@ -24,7 +24,7 @@ const CouponTable = ({ header, data, openEditForm, deleteCoupon }) => {
                 <th>{item.description}</th>
                 <th>{item.dcRate}(%)</th>              
                 <th>{currencyFormat(item.minCost)}</th>
-                <th>{item.expiryDate}</th>
+                <th>{item.duration}</th>
                 <th style={{ minWidth: "100px" }}>                  
                   <Button
                     size="sm"

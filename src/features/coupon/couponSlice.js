@@ -33,6 +33,7 @@ export const createCoupon = createAsyncThunk(
       dispatch(
         showToastMessage({ message: "쿠폰 생성 완료", status: "success" })
       );
+      await dispatch(getCouponList());
       return response.data;
     } catch (error) {
       dispatch(showToastMessage({ message: error.error, status: "error" }));
@@ -41,10 +42,34 @@ export const createCoupon = createAsyncThunk(
   }
 );
 
+export const deleteCoupon = createAsyncThunk(
+  "coupon/deleteCoupon",
+  async (id, {dispatch, rejectWithValue}) => {
+    try{
+      const response = await api.delete(`/coupon/${id}`);
+      if(response.status !== 200) throw new Error(response.error);
+      dispatch(
+        showToastMessage({ message: "쿠폰 삭제 완료", status: "success" })
+      );
+      await dispatch(getCouponList());
+      return response.data;
+    }
+    catch(error){
+      dispatch(
+        showToastMessage({ message: error.error, status: "error" }));
+      return rejectWithValue(error.error);
+    }
+  }
+)
+
 const couponSlice = createSlice({
   name: "coupon",
   initialState,
-  reducers: {},
+  reducers: {
+    setSelectedCoupon(state, action){
+      state.selectedCoupon = action.payload;
+    }
+  },
   extraReducers: (builder) => {
     builder
       .addCase(getCouponList.pending, (state) => {
@@ -68,6 +93,17 @@ const couponSlice = createSlice({
         state.error = null;
       })
       .addCase(createCoupon.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(deleteCoupon.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteCoupon.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(deleteCoupon.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       });

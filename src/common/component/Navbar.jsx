@@ -45,8 +45,8 @@ const Navbar = ({ user }) => {
     setValue("");
   };
 
-  const goEventPage = () => {
-    navigate("/event");
+  const goCouponPage = () => {
+    navigate("/coupons");
   };
 
   useEffect(() => {
@@ -85,8 +85,8 @@ const Navbar = ({ user }) => {
         </button>
 
         <div className="side-menu-list" id="menu-list">
-          <button className="event-btn" onClick={goEventPage}>
-            EVENT
+          <button className="event-btn" onClick={goCouponPage}>
+            COUPONS
           </button>
           {menuList.map((menu, index) => (
             <button key={index} onClick={() => getProductListByCategory(menu)}>
@@ -174,7 +174,7 @@ const Navbar = ({ user }) => {
       </div>
       <div className="nav-menu-area">
         <ul className="menu">
-          <button className="event-btn" onClick={goEventPage}>
+          <button className="event-btn" onClick={goCouponPage}>
             EVENT
           </button>
           {menuList.map((menu, index) => (

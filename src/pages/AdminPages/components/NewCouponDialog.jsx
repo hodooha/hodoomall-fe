@@ -1,17 +1,14 @@
 import React, { useState, useEffect } from "react";
 import { Form, Modal, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-
-const CATEGORY = ["TOP", "OUTER", "ALL-IN-ONE", "ACC", "SET", "HOME"];
-const STATUS = ["active", "disactive"];
-const SIZE = ["XS", "S", "M", "L", "XL", "Free"];
+import { createCoupon } from "../../../features/coupon/couponSlice";
 
 const InitialFormData = {
   name: "",
   description: "",
   dcRate: "",
   minCost: "",
-  expiryDate: "",
+  duration: "",
   totalQty: ""
 };
 const NewCouponDialog = ({ mode, showDialog, setShowDialog }) => {
@@ -20,7 +17,7 @@ const NewCouponDialog = ({ mode, showDialog, setShowDialog }) => {
   const [formData, setFormData] = useState(
     mode === "new" ? { ...InitialFormData } : selectedCoupon
   );
-  const [stock, setStock] = useState([]);
+
   const dispatch = useDispatch();
   const handleClose = () => {
     setFormData({ ...formData });
@@ -29,11 +26,11 @@ const NewCouponDialog = ({ mode, showDialog, setShowDialog }) => {
 
   const handleSubmit = (event) => {
     event.preventDefault();
-    
+    console.log(formData);
     if (mode === "new") {      
-      // dispatch(
-      //   createCoupon({ ...formData })
-      // );
+      dispatch(
+        createCoupon({ ...formData })
+      );
       setShowDialog(false);
     } else {
       // dispatch(
@@ -131,13 +128,14 @@ const NewCouponDialog = ({ mode, showDialog, setShowDialog }) => {
             />
           </Form.Group>
 
-          <Form.Group as={Col} controlId="expiryDate">
-            <Form.Label>Expiry Date</Form.Label>
+          <Form.Group as={Col} controlId="duration">
+            <Form.Label>Coupon Duration(일)</Form.Label>
             <Form.Control
-              value={formData.expiryDate}
+              value={formData.duration}
               required
               onChange={handleChange}
-              type="date"            
+              type="number"
+              placeholder="쿠폰 유효 기간(일)"            
             />
           </Form.Group>
         </Row>
