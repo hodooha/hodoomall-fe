@@ -18,7 +18,7 @@ import MyPage from "./pages/MyPage/MyPage";
 import AdminOrderPage from "./pages/AdminPages/AdminOrderPage";
 import AdminCouponPage from "./pages/AdminPages/AdminCouponPage";
 import CouponsPage from "./pages/EventPage/CouponsPage";
-import CouponPage from "./pages/EventPage/CouponPage";
+import CouponDetailPage from "./pages/EventPage/CouponDetailPage";
 
 function App() {
   return (
@@ -29,7 +29,7 @@ function App() {
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/coupons">
           <Route index element={<CouponsPage />} />
-          <Route path="/coupons/:id" element={<CouponPage />} />
+          <Route path="/coupons/:id" element={<CouponDetailPage />} />
         </Route>
         <Route path="/product">
           <Route index element={<ProductsPage />} />

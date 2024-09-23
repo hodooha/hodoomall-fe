@@ -8,7 +8,8 @@ import { ColorRing } from "react-loader-spinner";
 import "./MyPage.style.css";
 import { getOrder } from "../../features/order/orderSlice";
 import ReactPaginate from "react-paginate";
-// import CouponTable from "../component/CouponTable";
+import CouponTable from "./components/CouponTable";
+import { getUserCouponList } from "../../features/coupon/couponSlice";
 
 const MyPage = () => {
   const dispatch = useDispatch();
@@ -20,7 +21,7 @@ const MyPage = () => {
     status: query.get("status") || ""
   });
   const { loading, orderList, totalPageNum } = useSelector((state) => state.order);
-  // const { couponList } = useSelector((state) => state.event);
+  const { userCouponList } = useSelector((state) => state.coupon);
 
   const handlePageClick = ({ selected }) => {
     setSearchQuery({ ...searchQuery, page: selected + 1 });
@@ -29,7 +30,7 @@ const MyPage = () => {
 
   useEffect(() => {
     dispatch(getOrder({...searchQuery, pageSize: 5}));
-    // dispatch(getCouponList());
+    dispatch(getUserCouponList());
   }, [query]);
 
   useEffect(() => {
@@ -95,16 +96,16 @@ const MyPage = () => {
         />
         </Col>
         
-        {/* <Col lg={6} className="mypage-col">
+        <Col lg={6} className="mypage-col">
           <div className="mypage-title">쿠폰 내역</div>
-          {couponList.length === 0 ? (
+          {userCouponList.length === 0 ? (
             <div className="text-align-center empty-bag">
               보유하신 쿠폰이 없습니다.
             </div>
           ) : (
-            couponList.map((c) => <CouponTable coupon={c} />)
+            userCouponList.map((c) => <CouponTable coupon={c} />)
           )}
-        </Col> */}
+        </Col>
       </Row>
     </Container>
   );

@@ -3,7 +3,7 @@ import Button from "react-bootstrap/Button";
 import Table from "react-bootstrap/Table";
 import { currencyFormat } from "../../../utils/number";
 
-const CouponTable = ({ header, data, openEditForm, deleteCoupon }) => {
+const AdminCouponTable = ({ header, data, openEditForm, deleteCoupon }) => {
   return (
     <div className="overflow-x">
       <Table striped bordered hover>
@@ -49,4 +49,4 @@ const CouponTable = ({ header, data, openEditForm, deleteCoupon }) => {
   )
 }
 
-export default CouponTable
+export default AdminCouponTable

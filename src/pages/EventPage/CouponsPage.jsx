@@ -7,6 +7,7 @@ import { ColorRing } from "react-loader-spinner";
 import CouponCard from "./components/CouponCard";
 import ReactPaginate from "react-paginate";
 import { useSearchParams } from "react-router-dom";
+import "./CouponsPage.style.css";
 
 const CouponsPage = () => {
   const dispatch = useDispatch();

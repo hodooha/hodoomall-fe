@@ -4,11 +4,12 @@ import SearchBox from "../../common/component/SearchBox";
 import { useDispatch, useSelector } from "react-redux";
 import ReactPaginate from "react-paginate";
 import { useSearchParams, useNavigate } from "react-router-dom";
-import CouponTable from "./components/CouponTable";
+import CouponTable from "./components/AdminCouponTable";
 import { ColorRing } from "react-loader-spinner";
 import { couponActions, getCouponList, deleteCoupon } from "../../features/coupon/couponSlice";
 import Swal from 'sweetalert2';
 import NewCouponDialog from "./components/NewCouponDialog";
+import AdminCouponTable from "./components/AdminCouponTable";
 
 const AdminCouponPage = () => {
   const navigate = useNavigate();
@@ -117,7 +118,7 @@ const AdminCouponPage = () => {
         {error ? (
           <Alert variant="danger">{error}</Alert>
         ) : (
-          <CouponTable
+          <AdminCouponTable
             header={tableHeader}
             data={couponList}
             openEditForm={openEditForm}
