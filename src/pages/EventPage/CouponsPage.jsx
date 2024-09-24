@@ -46,17 +46,15 @@ const CouponsPage = () => {
 
   return (
     <Container>
-      {error ? (
-        <Alert variant="danger">{error}</Alert>
-      ) : (
-        <Row>
-          {couponList && couponList.map((i) => (
+      <Row>
+        {couponList &&
+          couponList.map((i) => (
             <Col key={i.id} md={3} sm={12}>
               <CouponCard item={i} />
             </Col>
           ))}
-        </Row>
-      )}
+      </Row>
+
       <ReactPaginate
         nextLabel="next >"
         onPageChange={handlePageClick}

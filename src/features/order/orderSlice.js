@@ -43,17 +43,30 @@ export const getOrder = createAsyncThunk(
   }
 );
 
+export const getAllOrders = createAsyncThunk(
+  "order/getAllOrders",
+  async (query, { dispatch, rejectWithValue }) => {
+    try {
+      const response = await api.get("/admin/order", { params: { ...query } });
+      if (response.status !== 200) throw new Error(response.error);
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.error);
+    }
+  }
+);
+
 export const updateOrder = createAsyncThunk(
   "order/updateOrder",
   async (data, { dispatch, rejectWithValue }) => {
     try {
       console.log(data);
-      const response = await api.put("/order", data);
+      const response = await api.put("/admin/order", data);
       if (response.status !== 200) throw new Error(response.error);
       dispatch(
         showToastMessage({ message: "주문 수정 완료", status: "success" })
       );
-      await dispatch(getOrder({page: data.page, pageSize: 10}));
+      await dispatch(getAllOrders({page: data.page, pageSize: 10}));
       return response.data;
     } catch (error) {
       dispatch(showToastMessage({ message: error.error, status: "error" }));
@@ -94,6 +107,19 @@ const orderSlice = createSlice({
         state.error = null;
       })
       .addCase(getOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(getAllOrders.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(getAllOrders.fulfilled, (state, action) => {
+        state.loading = false;
+        state.orderList = action.payload.orderList;
+        state.totalPageNum = action.payload.totalPageNum;
+        state.error = null;
+      })
+      .addCase(getAllOrders.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

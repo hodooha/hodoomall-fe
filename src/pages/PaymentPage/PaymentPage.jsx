@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import PaymentForm from "./components/PaymentForm";
 import OrderReceipt from "../../common/component/OrderReceipt";
@@ -7,11 +7,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { useNavigate } from "react-router";
 import { createOrder } from "../../features/order/orderSlice";
 import { cc_expires_format } from "../../utils/number";
+import { getUserCouponList } from "../../features/coupon/couponSlice";
 
 const PaymentPage = () => {
   const dispatch = useDispatch();
   const { cartList, totalPrice } = useSelector((state) => state.cart);
-//   const { couponList } = useSelector((state) => state.event);
+  const { userCouponList } = useSelector((state) => state.coupon);
   const [cardValue, setCardValue] = useState({
     cvc: "",
     expiry: "",
@@ -32,17 +33,19 @@ const PaymentPage = () => {
     zip: "",
   });
 
-//   const redeemCoupon = (event) => {
-//     const coupon = couponList.find((c) => c._id === event.target.id);
-//     setCouponCheck(event.target.checked);
-//     if (event.target.checked) {
-//       setDcPrice(totalPrice * (1 - coupon.discountRate / 100));
-//       setSelectedCoupon(coupon);
-//     } else {
-//       setDcPrice(totalPrice);
-//       setSelectedCoupon("");
-//     }
-//   };
+  const redeemCoupon = (event) => {
+    const coupon = userCouponList.find((c) => c.id === event.target.id);
+    setCouponCheck(event.target.checked);
+    if (event.target.checked) {
+      setDcPrice(
+        Math.round((totalPrice * (1 - coupon.coupon.dcRate / 100)) / 10) * 10
+      );
+      setSelectedCoupon(coupon);
+    } else {
+      setDcPrice(totalPrice);
+      setSelectedCoupon("");
+    }
+  };
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -56,7 +59,10 @@ const PaymentPage = () => {
           ? {
               productId: item.productId.id,
               price:
-                item.productId.price * (1 - selectedCoupon.discountRate / 100),
+                Math.round(
+                  (item.productId.price * (1 - selectedCoupon.coupon.dcRate / 100)) /
+                    10
+                ) * 10,
               qty: item.qty,
               size: item.size.toLowerCase(),
             }
@@ -67,9 +73,9 @@ const PaymentPage = () => {
               size: item.size.toLowerCase(),
             }
       ),
-      couponId: selectedCoupon._id,
+      userCouponId: selectedCoupon.id || "",
     };
-    dispatch(createOrder({data: data, navigate: navigate}));
+    dispatch(createOrder({ data: data, navigate: navigate }));
   };
 
   const handleFormChange = (event) => {
@@ -89,6 +95,10 @@ const PaymentPage = () => {
   const handleInputFocus = (e) => {
     setCardValue({ ...cardValue, focus: e.target.name });
   };
+
+  useEffect(() => {
+    dispatch(getUserCouponList());
+  }, []);
 
   if (cartList.length === 0) {
     navigate("/cart");
@@ -177,21 +187,21 @@ const PaymentPage = () => {
                   />
                 </div>
 
-                {/* {couponList && couponList.length > 0 ? (
+                {userCouponList && userCouponList.length > 0 ? (
                   <div>
                     <h2 className="payment-title">쿠폰 정보</h2>
-                    {couponList.map((c) => (
+                    {userCouponList.map((c) => (
                       <Form.Check
                         onChange={redeemCoupon}
-                        id={c._id}
+                        id={c.id}
                         type="checkbox"
-                        label={c.name}
+                        label={c.coupon.name}
                       />
                     ))}
                   </div>
                 ) : (
                   ""
-                )} */}
+                )}
 
                 <div>
                   <h2 className="payment-title">결제 정보</h2>
@@ -222,7 +232,7 @@ const PaymentPage = () => {
         </Col>
       </Row>
     </Container>
-  ); 
+  );
 };
 
 export default PaymentPage;

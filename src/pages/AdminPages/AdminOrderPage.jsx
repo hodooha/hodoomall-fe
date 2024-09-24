@@ -7,7 +7,7 @@ import OrderTable from "./components/OrderTable";
 import ReactPaginate from "react-paginate";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { ColorRing } from "react-loader-spinner";
-import { orderActions, getOrder } from "../../features/order/orderSlice";
+import { orderActions, getAllOrders } from "../../features/order/orderSlice";
 
 
 const AdminOrderPage = () => {
@@ -36,7 +36,7 @@ const AdminOrderPage = () => {
   ];
 
   useEffect(() => {
-    dispatch(getOrder({ ...searchQuery, pageSize: 10 }));
+    dispatch(getAllOrders({ ...searchQuery, pageSize: 10 }));
   }, [query]);
 
   useEffect(() => {
