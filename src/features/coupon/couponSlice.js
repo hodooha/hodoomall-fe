@@ -16,7 +16,7 @@ export const getCouponList = createAsyncThunk(
   "coupon/getCouponList",
   async (query, { dispatch, rejectWithValue }) => {
     try {
-      const response = await api.get("/coupon", { params: { ...query } });
+      const response = await api.get("/coupons", { params: { ...query } });
       if (response.status !== 200) throw new Error(response.error);
       return response.data;
     } catch (error) {
@@ -29,7 +29,7 @@ export const createCoupon = createAsyncThunk(
   "coupon/createCoupon",
   async (formData, { dispatch, rejectWithValue }) => {
     try {
-      const response = await api.post("/coupon", formData);
+      const response = await api.post("/admin/coupons", formData);
       if (response.status !== 200) throw new Error(response.error);
       dispatch(
         showToastMessage({ message: "쿠폰 생성 완료", status: "success" })
@@ -47,7 +47,7 @@ export const deleteCoupon = createAsyncThunk(
   "coupon/deleteCoupon",
   async (id, { dispatch, rejectWithValue }) => {
     try {
-      const response = await api.delete(`/coupon/${id}`);
+      const response = await api.delete(`/admin/coupons/${id}`);
       if (response.status !== 200) throw new Error(response.error);
       dispatch(
         showToastMessage({ message: "쿠폰 삭제 완료", status: "success" })
@@ -65,7 +65,7 @@ export const getCouponDetail = createAsyncThunk(
   "coupon/getCouponDetail",
   async (id, { dispatch, rejectWithValue }) => {
     try {
-      const response = await api.get(`/coupon/${id}`);
+      const response = await api.get(`/coupons/${id}`);
       if(response.status !== 200) throw new Error(response.error);
       console.log(response);
       return response.data;

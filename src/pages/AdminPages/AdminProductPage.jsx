@@ -8,7 +8,7 @@ import { useSearchParams, useNavigate } from "react-router-dom";
 import ProductTable from "./components/ProductTable";
 import { ColorRing } from "react-loader-spinner";
 import {
-  getProductList,
+  getAllProductList,
   deleteProduct,
   productActions,
 } from "../../features/product/productSlice";
@@ -42,7 +42,7 @@ const AdminProduct = () => {
   ];
 
   useEffect(() => {
-    dispatch(getProductList({ ...searchQuery }));
+    dispatch(getAllProductList({ ...searchQuery }));
   }, [query]);
 
   useEffect(() => {

@@ -1,18 +1,23 @@
 import React from "react";
 import {Card, Col, Row, Button} from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { addUserCoupon } from "../../../features/coupon/couponSlice";
 
 const CouponCard = ({ item }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const {user} = useSelector((state) => state.user);
 
   const showCouponDetail = (id) => {
     // navigate(`/coupons/${id}`);
   }
 
   const handleAddCoupon = () => {
+    if (!user) {
+      navigate("/login");
+      return;
+    }
     dispatch(addUserCoupon({couponId: item.id, duration: item.duration}));
   }
 
