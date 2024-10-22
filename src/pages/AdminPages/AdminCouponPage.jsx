@@ -27,12 +27,14 @@ const AdminCouponPage = () => {
 
   const tableHeader = [
     "#",
-    "Coupon#",
     "Name",
     "Description",
-    "DCRate",
+    "Image",
+    "Type",
+    "DC Amount",
     "Minimum cost",
     "Duration",
+    "Status",
     ""
   ];
 

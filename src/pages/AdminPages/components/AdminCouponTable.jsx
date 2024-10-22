@@ -19,12 +19,17 @@ const AdminCouponTable = ({ header, data, openEditForm, deleteCoupon }) => {
             data.map((item, index) => (
               <tr key={index}>
                 <th>{index}</th>
-                <th>{item.id}</th>
+                {/* <th>{item.id}</th> */}
                 <th style={{ minWidth: "100px" }}>{item.name}</th>
                 <th>{item.description}</th>
-                <th>{item.dcRate}(%)</th>              
+                <th>
+                  <img src={item.image || "/image/coupons.png"} width={100} alt="image" />
+                </th>
+                <th>{item.type == "dcRate" ? "할인율" : "할인금액"}</th>
+                <th>{item.dcAmount}{item.type == "dcRate" ? "(%)" : "원"}</th>              
                 <th>{currencyFormat(item.minCost)}</th>
                 <th>{item.duration}</th>
+                <th>{item.status}</th>
                 <th style={{ minWidth: "100px" }}>                  
                   <Button
                     size="sm"

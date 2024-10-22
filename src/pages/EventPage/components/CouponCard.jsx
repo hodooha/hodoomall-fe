@@ -25,7 +25,7 @@ const CouponCard = ({ item }) => {
     <Row>
       <Col>
         <Card onClick={()=>showCouponDetail(item.id)}>
-          <Card.Img variant="top" src="/image/coupons.png" />
+          <Card.Img variant="top" src={item.image || "/image/coupons.png"} />
           <Card.Body className="couponCard">
             <Card.Title>{item.name}</Card.Title>
             <Card.Text>{item.description}</Card.Text>   

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Form, Modal, Button, Row, Col } from "react-bootstrap";
+import { Form, Modal, Button, Row, Col, S } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import CloudinaryUploadWidget from "../../../utils/CloudinaryUploadWidget";
 import { createProduct, editProduct } from "../../../features/product/productSlice";

@@ -2,15 +2,22 @@ import React, { useState, useEffect } from "react";
 import { Form, Modal, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
 import { createCoupon } from "../../../features/coupon/couponSlice";
+import CloudinaryUploadWidget from "../../../utils/CloudinaryUploadWidget";
 
 const InitialFormData = {
   name: "",
   description: "",
-  dcRate: "",
+  type:"",
+  dcAmount: "",
   minCost: "",
   duration: "",
-  totalQty: ""
+  totalQty: "",
+  status:"active",
+  image: ""
 };
+
+const STATUS = ["active", "disactive"];
+
 const NewCouponDialog = ({ mode, showDialog, setShowDialog }) => {
   const { selectedCoupon, error } = useSelector((state) => state.coupon);
 
@@ -27,10 +34,8 @@ const NewCouponDialog = ({ mode, showDialog, setShowDialog }) => {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(formData);
-    if (mode === "new") {      
-      dispatch(
-        createCoupon({ ...formData })
-      );
+    if (mode === "new") {
+      dispatch(createCoupon({ ...formData }));
       setShowDialog(false);
     } else {
       // dispatch(
@@ -45,6 +50,10 @@ const NewCouponDialog = ({ mode, showDialog, setShowDialog }) => {
   const handleChange = (event) => {
     const { id, value } = event.target;
     setFormData({ ...formData, [id]: value });
+  };
+
+  const uploadImage = (url) => {
+    setFormData({ ...formData, image: url });
   };
 
   useEffect(() => {
@@ -80,14 +89,29 @@ const NewCouponDialog = ({ mode, showDialog, setShowDialog }) => {
             />
           </Form.Group>
 
-          <Form.Group as={Col} controlId="dcRate">
-            <Form.Label>DC Rate (%)</Form.Label>
+          <Form.Group as={Col} controlId="type">
+            <Form.Label>Type</Form.Label>
+            <Form.Select defaultValue={formData.type ? formData.type : ""} onChange={handleChange} required>
+              <option value="" disabled>
+              == 타입선택 == 
+              </option>
+              <option value="dcRate">
+                할인율(%)
+              </option>
+              <option value="dcPrice">
+                할인금액(원)
+              </option>
+            </Form.Select>
+          </Form.Group>
+
+          <Form.Group as={Col} controlId="dcAmount">
+            <Form.Label>DC Amount (% or 원)</Form.Label>
             <Form.Control
               onChange={handleChange}
               type="number"
-              placeholder="할인율"
+              placeholder="할인율 또는 금액"
               required
-              value={formData.dcRate}
+              value={formData.dcAmount}
             />
           </Form.Group>
         </Row>
@@ -105,9 +129,21 @@ const NewCouponDialog = ({ mode, showDialog, setShowDialog }) => {
           />
         </Form.Group>
 
+        <Form.Group className="mb-3" controlId="Image" required>
+          <Form.Label>Image</Form.Label>
+          <CloudinaryUploadWidget uploadImage={uploadImage} />
+
+          <img
+            id="uploadedimage"
+            src={formData.image}
+            className="upload-image mt-2"
+            alt="uploadedimage"
+          />
+        </Form.Group>
+
         <Row className="mb-3">
           <Form.Group as={Col} controlId="minCost">
-            <Form.Label>Minimum Order Cost</Form.Label>
+            <Form.Label>Minimum Cost(원)</Form.Label>
             <Form.Control
               value={formData.minCost}
               required
@@ -118,7 +154,7 @@ const NewCouponDialog = ({ mode, showDialog, setShowDialog }) => {
           </Form.Group>
 
           <Form.Group as={Col} controlId="totalQty">
-            <Form.Label>Total Quantity</Form.Label>
+            <Form.Label>Total Quantity(개)</Form.Label>
             <Form.Control
               value={formData.totalQty}
               required
@@ -129,14 +165,28 @@ const NewCouponDialog = ({ mode, showDialog, setShowDialog }) => {
           </Form.Group>
 
           <Form.Group as={Col} controlId="duration">
-            <Form.Label>Coupon Duration(일)</Form.Label>
+            <Form.Label>Duration(일)</Form.Label>
             <Form.Control
               value={formData.duration}
               required
               onChange={handleChange}
               type="number"
-              placeholder="쿠폰 유효 기간(일)"            
+              placeholder="쿠폰 유효 기간(일)"
             />
+          </Form.Group>
+          <Form.Group as={Col} controlId="status">
+            <Form.Label>Status</Form.Label>
+            <Form.Select
+              value={formData.status}
+              onChange={handleChange}
+              required
+            >
+              {STATUS.map((item, idx) => (
+                <option key={idx} value={item.toLowerCase()}>
+                  {item}
+                </option>
+              ))}
+            </Form.Select>
           </Form.Group>
         </Row>
         {mode === "new" ? (
