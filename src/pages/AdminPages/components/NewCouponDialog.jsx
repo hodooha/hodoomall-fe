@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Form, Modal, Button, Row, Col } from "react-bootstrap";
 import { useDispatch, useSelector } from "react-redux";
-import { createCoupon } from "../../../features/coupon/couponSlice";
+import { createCoupon, editCoupon } from "../../../features/coupon/couponSlice";
 import CloudinaryUploadWidget from "../../../utils/CloudinaryUploadWidget";
 
 const InitialFormData = {
@@ -38,11 +38,11 @@ const NewCouponDialog = ({ mode, showDialog, setShowDialog }) => {
       dispatch(createCoupon({ ...formData }));
       setShowDialog(false);
     } else {
-      // dispatch(
-      //   editCoupon(
-      //     { ...formData }
-      //   )
-      // );
+      dispatch(
+        editCoupon(
+          { ...formData }
+        )
+      );
       setShowDialog(false);
     }
   };
@@ -91,7 +91,7 @@ const NewCouponDialog = ({ mode, showDialog, setShowDialog }) => {
 
           <Form.Group as={Col} controlId="type">
             <Form.Label>Type</Form.Label>
-            <Form.Select defaultValue={formData.type ? formData.type : ""} onChange={handleChange} required>
+            <Form.Select value={formData.type} onChange={handleChange} required>
               <option value="" disabled>
               == 타입선택 == 
               </option>

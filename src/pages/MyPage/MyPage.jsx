@@ -18,9 +18,12 @@ const MyPage = () => {
   const [searchQuery, setSearchQuery] = useState({
     page: query.get("page") || 1,
     orderNum: query.get("orderNum") || "",
-    status: query.get("status") || ""
+    status: query.get("status") || "",
   });
-  const { loading, orderList, totalPageNum } = useSelector((state) => state.order);
+  const { loading, orderList, totalPageNum } = useSelector(
+    (state) => state.order
+  );
+  const { user } = useSelector((state) => state.user);
   const { userCouponList } = useSelector((state) => state.coupon);
 
   const handlePageClick = ({ selected }) => {
@@ -29,7 +32,7 @@ const MyPage = () => {
   };
 
   useEffect(() => {
-    dispatch(getOrder({...searchQuery, pageSize: 5}));
+    dispatch(getOrder({ ...searchQuery, pageSize: 5 }));
     dispatch(getUserCouponList());
   }, [query]);
 
@@ -44,6 +47,11 @@ const MyPage = () => {
     const query = params.toString();
     navigate("?" + query);
   }, [searchQuery]);
+
+  if (!user) {
+    navigate("/login");
+    return;
+  }
 
   if (loading) {
     return (
@@ -74,28 +82,28 @@ const MyPage = () => {
             orderList.map((o) => <OrderStatusCard order={o} />)
           )}
           <ReactPaginate
-          nextLabel="next >"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={5}
-          pageCount={totalPageNum}
-          forcePage={searchQuery.page - 1}
-          previousLabel="< previous"
-          renderOnZeroPageCount={null}
-          pageClassName="page-item"
-          pageLinkClassName="page-link"
-          previousClassName="page-item"
-          previousLinkClassName="page-link"
-          nextClassName="page-item"
-          nextLinkClassName="page-link"
-          breakLabel="..."
-          breakClassName="page-item"
-          breakLinkClassName="page-link"
-          containerClassName="pagination"
-          activeClassName="active"
-          className="display-center list-style-none"
-        />
+            nextLabel="next >"
+            onPageChange={handlePageClick}
+            pageRangeDisplayed={5}
+            pageCount={totalPageNum}
+            forcePage={searchQuery.page - 1}
+            previousLabel="< previous"
+            renderOnZeroPageCount={null}
+            pageClassName="page-item"
+            pageLinkClassName="page-link"
+            previousClassName="page-item"
+            previousLinkClassName="page-link"
+            nextClassName="page-item"
+            nextLinkClassName="page-link"
+            breakLabel="..."
+            breakClassName="page-item"
+            breakLinkClassName="page-link"
+            containerClassName="pagination"
+            activeClassName="active"
+            className="display-center list-style-none"
+          />
         </Col>
-        
+
         <Col lg={6} className="mypage-col">
           <div className="mypage-title">쿠폰 내역</div>
           {userCouponList.length === 0 ? (

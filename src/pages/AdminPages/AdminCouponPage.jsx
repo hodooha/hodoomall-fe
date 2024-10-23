@@ -56,9 +56,9 @@ const AdminCouponPage = () => {
   }, [searchQuery]);
 
   const openEditForm = (coupon) => {
-    setMode("edit");
-    setShowDialog(true);
+    setMode("edit");    
     dispatch(couponActions.setSelectedCoupon(coupon));
+    setShowDialog(true);
   };
 
   const handlePageClick = ({ selected }) => {

@@ -8,7 +8,7 @@ import {
   faShoppingBag,
 } from "@fortawesome/free-solid-svg-icons";
 import { Link, useSearchParams } from "react-router-dom";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../../features/user/userSlice";
 import EventPopup from "./EventPopup";
@@ -17,31 +17,36 @@ const Navbar = ({ user }) => {
   const dispatch = useDispatch();
   const [query, setQuery] = useSearchParams();
   const [value, setValue] = useState("");
+  const [searchType, setSearchType] = useState("product");
+  const [placeholder, setPlaceholder] = useState("제품검색");
   const [activeBtn, setActiveBtn] = useState(query.get("category" || "ALL"));
   const { cartItemCount } = useSelector((state) => state.cart);
   const [showSearchBox, setShowSearchBox] = useState(false);
   const menuList = ["ALL", "TOP", "OUTER", "ALL-IN-ONE", "ACC", "SET", "HOME"];
   let [width, setWidth] = useState(0);
   let navigate = useNavigate();
+  let path = useLocation().pathname;
+
   const onCheckEnter = (event) => {
     if (event.key === "Enter") {
       if (event.target.value === "") {
-        return navigate("/product");
+        return navigate(`/${searchType}`);
       }
-      navigate(`/product?name=${event.target.value}&page=1`);
+      navigate(`/${searchType}?name=${event.target.value}&page=1`);
     }
   };
   const logout = () => {
     dispatch(userActions.logout());
-    navigate("/product");
+    navigate("/product?page=1");
   };
 
   const getProductListByCategory = (menu) => {
     setActiveBtn(menu);
     if (menu === "" || menu === "ALL") {
-      return navigate("/product");
+      navigate("/product?page=1");
+    } else {
+      navigate(`/product?category=${menu}&page=1`);
     }
-    navigate(`/product?category=${menu}&page=1`);
     setValue("");
   };
 
@@ -49,9 +54,23 @@ const Navbar = ({ user }) => {
     navigate("/coupons");
   };
 
+  const setPath = () => {
+    if (path.includes("coupons")) {
+      setPlaceholder("쿠폰검색");
+      setSearchType("coupons");
+      setActiveBtn("COUPON");
+    } else if(path.includes("product")){
+      setPlaceholder("제품검색");
+      setSearchType("product");
+      setActiveBtn(query.get("category") == null ? "ALL" : query.get("category"));
+    } else{
+      setActiveBtn("");
+    }
+  };
+
   useEffect(() => {
-    setActiveBtn(query.get("category") || "ALL");
-  }, [query]);
+    setPath();
+  }, [path, query]);
 
   return (
     <div>
@@ -63,7 +82,7 @@ const Navbar = ({ user }) => {
               <FontAwesomeIcon className="search-icon" icon={faSearch} />
               <input
                 type="text"
-                placeholder="제품검색"
+                placeholder={placeholder}
                 onKeyPress={onCheckEnter}
                 value={value}
                 onChange={(event) => setValue(event.target.value)}
@@ -168,14 +187,14 @@ const Navbar = ({ user }) => {
       </div>
 
       <div className="nav-logo">
-        <Link to="/">
+        <Link to="/product?page=1">
           <img width={500} src="/image/logo.png" alt="logo.png" />
         </Link>
       </div>
       <div className="nav-menu-area">
         <ul className="menu">
-          <button className="event-btn" onClick={goCouponPage}>
-            EVENT
+          <button className={activeBtn === "COUPON" ? "menu-btn-active" : "event-btn"} onClick={goCouponPage}>
+            COUPON
           </button>
           {menuList.map((menu, index) => (
             <li key={index}>
@@ -193,7 +212,7 @@ const Navbar = ({ user }) => {
           <FontAwesomeIcon icon={faSearch} />
           <input
             type="text"
-            placeholder="제품검색"
+            placeholder={placeholder}
             onKeyPress={onCheckEnter}
             value={value}
             onChange={(event) => setValue(event.target.value)}

@@ -7,31 +7,26 @@ import { getProductList } from "../../features/product/productSlice";
 import { ColorRing } from "react-loader-spinner";
 import ReactPaginate from "react-paginate";
 
-
 const ProductsPage = () => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
   const [query, setQuery] = useSearchParams();
-  const { productList, error, loading, totalPageNum } = useSelector((state) => state.product);
-  const [searchQuery, setSearchQuery] = useState({
-    page: query.get("page") || 1,
-    name: query.get("name") || "",
-    category: query.get("category") || ""
-  });
+  const { productList, error, loading, totalPageNum } = useSelector(
+    (state) => state.product
+  );
 
   const handlePageClick = ({ selected }) => {
-    setSearchQuery({ ...searchQuery, page: selected + 1 });
-    // dispatch(getProductList({ ...searchQuery }));
+    query.set("page", selected + 1);
+    setQuery(query);
   };
-
 
   useEffect(() => {
     dispatch(
       getProductList({
         page: query.get("page") || 1,
         name: query.get("name") || "",
-        category: query.get("category") || "",
-        pageSize: 20
+        category: query.get("category") == null ? "" : query.get("category"),
+        pageSize: 8,
       })
     );
   }, [query]);
@@ -53,41 +48,41 @@ const ProductsPage = () => {
   }
 
   return (
-      <Container>
-        {error ? (
-          <Alert variant="danger">{error}</Alert>
-        ) : (
-          <Row>
-            {productList.map((i) => (
-              <Col key={i.id} md={3} sm={12}>
-                <ProductCard item={i} />
-              </Col>
-            ))}
-          </Row>
-        )}
-        <ReactPaginate
-          nextLabel="next >"
-          onPageChange={handlePageClick}
-          pageRangeDisplayed={5}
-          pageCount={totalPageNum}
-          forcePage={searchQuery.page - 1}
-          previousLabel="< previous"
-          renderOnZeroPageCount={null}
-          pageClassName="page-item"
-          pageLinkClassName="page-link"
-          previousClassName="page-item"
-          previousLinkClassName="page-link"
-          nextClassName="page-item"
-          nextLinkClassName="page-link"
-          breakLabel="..."
-          breakClassName="page-item"
-          breakLinkClassName="page-link"
-          containerClassName="pagination"
-          activeClassName="active"
-          className="display-center list-style-none"
-        />
-      </Container>
+    <Container>
+      {error ? (
+        <Alert variant="danger">{error}</Alert>
+      ) : (
+        <Row>
+          {productList.map((i) => (
+            <Col key={i.id} md={3} sm={12}>
+              <ProductCard item={i} />
+            </Col>
+          ))}
+        </Row>
+      )}
+      <ReactPaginate
+        nextLabel="next >"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={5}
+        pageCount={totalPageNum}
+        forcePage={query.get("page") - 1}
+        previousLabel="< previous"
+        renderOnZeroPageCount={null}
+        pageClassName="page-item"
+        pageLinkClassName="page-link"
+        previousClassName="page-item"
+        previousLinkClassName="page-link"
+        nextClassName="page-item"
+        nextLinkClassName="page-link"
+        breakLabel="..."
+        breakClassName="page-item"
+        breakLinkClassName="page-link"
+        containerClassName="pagination"
+        activeClassName="active"
+        className="display-center list-style-none"
+      />
+    </Container>
   );
 };
 
-export default ProductsPage
+export default ProductsPage;

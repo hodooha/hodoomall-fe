@@ -11,20 +11,23 @@ import "./CouponsPage.style.css";
 
 const CouponsPage = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const { loading, error, couponList, selectedCoupon, totalPageNum } =
     useSelector((state) => state.coupon);
   const [query, setQuery] = useSearchParams();
 
   useEffect(() => {
-    dispatch(getCouponList());
-  }, []);
-
-  const [searchQuery, setSearchQuery] = useState({
-    page: query.get("page") || 1,
-  });
+    dispatch(
+      getCouponList({
+        name: query.get("name"),
+        page: query.get("page") || 1,
+      })
+    );
+  }, [query]);
 
   const handlePageClick = ({ selected }) => {
-    setSearchQuery({ ...searchQuery, page: selected + 1 });
+    query.set("page", selected + 1);
+    setQuery(query);
     // dispatch(getProductList({ ...searchQuery }));
   };
 
@@ -60,7 +63,7 @@ const CouponsPage = () => {
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}
         pageCount={totalPageNum}
-        forcePage={searchQuery.page - 1}
+        forcePage={(query.get("page") || 1) - 1}
         previousLabel="< previous"
         renderOnZeroPageCount={null}
         pageClassName="page-item"

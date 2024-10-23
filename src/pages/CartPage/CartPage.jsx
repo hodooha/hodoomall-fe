@@ -7,17 +7,24 @@ import CartProductCard from "./components/CartProductCard";
 import OrderReceipt from "../../common/component/OrderReceipt";
 import { getCartList } from "../../features/cart/cartSlice";
 import "./CartPage.style.css";
+import { useNavigate } from "react-router-dom";
 
 const CartPage = () => {
   const dispatch = useDispatch();
   const { cartList, loading, totalPrice } = useSelector((state) => state.cart);
   const { user } = useSelector((state) => state.user);
+  const navigate = useNavigate();
 
   useEffect(() => {
     dispatch(getCartList());
     console.log(cartList);
     // dispatch(getCouponList());
   }, []);
+
+  if (!user) {
+    navigate("/login");
+    return;
+  }
 
   if (loading || !cartList) {
     return (
