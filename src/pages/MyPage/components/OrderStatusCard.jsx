@@ -10,10 +10,10 @@ const badgeBg = {
   delivered: "success",
 };
 
-const OrderStatusCard = ({ order }) => {
+const OrderStatusCard = ({ order, openDetail }) => {
   return (
     <div>
-      <Row className="status-card">
+      <Row className="status-card" onClick={()=>openDetail(order)}>
         <Col xs={3}>
           <img  src={order.items[0].product.image} alt="" height={96} />
         </Col>

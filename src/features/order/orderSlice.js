@@ -43,6 +43,21 @@ export const getOrder = createAsyncThunk(
   }
 );
 
+
+export const deleteOrder = createAsyncThunk(
+  "order/deleteOrder",
+  async (id, {dispatch, rejectWithValue}) =>{
+    try{
+      const response = await api.delete(`/order/${id}`);
+      if(response.status != 200) throw new Error(response.error);
+      return response.data;
+    } catch(error){
+      dispatch(showToastMessage({message: error.error, status: "error"}));
+      return rejectWithValue(error.error);
+    }
+  }
+)
+
 export const getAllOrders = createAsyncThunk(
   "order/getAllOrders",
   async (query, { dispatch, rejectWithValue }) => {
@@ -74,6 +89,7 @@ export const updateOrder = createAsyncThunk(
     }
   }
 );
+
 
 const orderSlice = createSlice({
   name: "order",
@@ -107,6 +123,17 @@ const orderSlice = createSlice({
         state.error = null;
       })
       .addCase(getOrder.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+      .addCase(deleteOrder.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(deleteOrder.fulfilled, (state) => {
+        state.loading = false;
+        state.error = null;
+      })
+      .addCase(deleteOrder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })

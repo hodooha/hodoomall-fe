@@ -36,10 +36,15 @@ const PaymentPage = () => {
   const redeemCoupon = (event) => {
     const coupon = userCouponList.find((c) => c.id === event.target.id);
     setCouponCheck(event.target.checked);
+    console.log(coupon);
     if (event.target.checked) {
-      setDcPrice(
-        Math.round((totalPrice * (1 - coupon.coupon.dcRate / 100)) / 10) * 10
-      );
+      let price = totalPrice;
+      if (coupon.coupon.type === "dcPrice") {
+        price = totalPrice - coupon.coupon.dcAmount;
+      } else if (coupon.coupon.type === "dcRate") {
+        price = totalPrice * (1 - coupon.coupon.dcRate / 100);
+      }
+      setDcPrice(Math.round(price / 10) * 10);
       setSelectedCoupon(coupon);
     } else {
       setDcPrice(totalPrice);
@@ -59,10 +64,15 @@ const PaymentPage = () => {
           ? {
               productId: item.productId.id,
               price:
-                Math.round(
-                  (item.productId.price * (1 - selectedCoupon.coupon.dcRate / 100)) /
-                    10
-                ) * 10,
+                selectedCoupon.coupon.type === "dcRate"
+                  ? Math.round(
+                      (item.productId.price *
+                        (1 - selectedCoupon.coupon.dcAmount / 100)) /
+                        10
+                    ) * 10
+                  : selectedCoupon.coupon.type === "dcPrice"
+                  ? item.productId.price - selectedCoupon.coupon.dcAmount
+                  : item.productId.price,
               qty: item.qty,
               size: item.size.toLowerCase(),
             }
@@ -190,14 +200,18 @@ const PaymentPage = () => {
                 {userCouponList && userCouponList.length > 0 ? (
                   <div>
                     <h2 className="payment-title">쿠폰 정보</h2>
-                    {userCouponList.map((c) => (
-                      <Form.Check
-                        onChange={redeemCoupon}
-                        id={c.id}
-                        type="checkbox"
-                        label={c.coupon.name}
-                      />
-                    ))}
+                    {userCouponList.map((c) => {
+                      if (totalPrice >= c.coupon.minCost) {
+                        return (
+                          <Form.Check
+                            onChange={redeemCoupon}
+                            id={c.id}
+                            type="checkbox"
+                            label={c.coupon.name}
+                          />
+                        );
+                      }
+                    })}
                   </div>
                 ) : (
                   ""
