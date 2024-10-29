@@ -3,7 +3,7 @@ import { Modal, Table, Form, Col, Button } from "react-bootstrap";
 import { useSelector } from "react-redux";
 import { currencyFormat } from "../../../utils/number";
 
-const OrderStatusDetail = ({ open, handleClose, cancelOrder }) => {
+const OrderStatusDetail = ({ open, handleClose, handleCancelOrder }) => {
   const { selectedOrder } = useSelector((state) => state.order);
   return (
     <Modal show={open} onHide={handleClose}>
@@ -37,7 +37,7 @@ const OrderStatusDetail = ({ open, handleClose, cancelOrder }) => {
             <tbody>
               {selectedOrder.items.length > 0 &&
                 selectedOrder.items.map((item, index) => (
-                  <tr key={item.id}>
+                  <tr key={index}>
                     <td>{index+1}</td>
                     <td>{item.product.name}</td>
                     <td>{currencyFormat(item.price)}</td>
@@ -52,7 +52,7 @@ const OrderStatusDetail = ({ open, handleClose, cancelOrder }) => {
             </tbody>
           </Table>
         </div>
-        <Button variant="danger" onClick={() => cancelOrder(selectedOrder)}>
+        <Button variant="danger" onClick={() => handleCancelOrder(selectedOrder)}>
           주문취소
         </Button>
       </Modal.Body>

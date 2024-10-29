@@ -6,7 +6,11 @@ import { useDispatch, useSelector } from "react-redux";
 import OrderStatusCard from "./components/OrderStatusCard";
 import { ColorRing } from "react-loader-spinner";
 import "./MyPage.style.css";
-import { getOrder, orderActions, deleteOrder } from "../../features/order/orderSlice";
+import {
+  getOrder,
+  orderActions,
+  cancelOrder,
+} from "../../features/order/orderSlice";
 import ReactPaginate from "react-paginate";
 import CouponTable from "./components/CouponTable";
 import { getUserCouponList } from "../../features/coupon/couponSlice";
@@ -66,23 +70,27 @@ const MyPage = () => {
     dispatch(orderActions.setSelectedOrder(order));
   };
 
-  const cancelOrder = (order) => {
+  const handleCancelOrder = (order) => {
     console.log(order);
     Swal.fire({
-      title: "정말 삭제하시겠습니까?",
+      title: "정말 취소하시겠습니까?",
       icon: "warning",
       showCancelButton: true,
       confirmButtonColor: "#3085d6",
       cancelButtonColor: "#d33",
-      confirmButtonText: "삭제",
-      cancelButtonText: "취소"
+      confirmButtonText: "주문취소",
+      cancelButtonText: "돌아가기",
     }).then((result) => {
       if (result.isConfirmed) {
-        dispatch(deleteOrder(order.id));
+        dispatch(
+          cancelOrder({
+            id: order.id,
+            searchQuery: { ...searchQuery, pageSize: 5 },
+          })
+        );
         setOpen(false);
       }
     });
-    dispatch(getOrder({ ...searchQuery, pageSize: 5 }));
   };
 
   useEffect(() => {
@@ -157,7 +165,7 @@ const MyPage = () => {
                 <option value="preparing">배송준비중</option>
                 <option value="shipping">배송중</option>
                 <option value="delivered">배송완료</option>
-                <option value="refund">주문취소</option>
+                <option value="canceled">주문취소</option>
               </Form.Select>
             </Form.Group>
           </Row>
@@ -167,7 +175,7 @@ const MyPage = () => {
             </div>
           ) : (
             orderList.map((o) => (
-              <OrderStatusCard order={o} openDetail={openDetail} />
+              <OrderStatusCard order={o} openDetail={openDetail} key={o.id} />
             ))
           )}
           <Row className="mb-3">
@@ -234,7 +242,13 @@ const MyPage = () => {
           )}
         </Col>
       </Row>
-      {open && <OrderStatusDetail open={open} handleClose={handleClose} cancelOrder={cancelOrder}/>}
+      {open && (
+        <OrderStatusDetail
+          open={open}
+          handleClose={handleClose}
+          handleCancelOrder={handleCancelOrder}
+        />
+      )}
     </Container>
   );
 };

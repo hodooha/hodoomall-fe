@@ -21,7 +21,7 @@ const CouponTable = ({ couponList }) => {
               const diff = new Date(expiredAt) - new Date(createdAt);
               const diffDay = Math.floor(diff / (1000 * 60 * 60 * 24));
               return (
-                <tr>
+                <tr key={c.id}>
                   <td>{c.coupon.name}</td>
                   <td>{currencyFormat(c.coupon.minCost)}원</td>
                   <td>{`${createdAt.slice(0, 10)} ~ ${expiredAt.slice(

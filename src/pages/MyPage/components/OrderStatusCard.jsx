@@ -8,14 +8,15 @@ const badgeBg = {
   shipping: "warning",
   refund: "danger",
   delivered: "success",
+  canceled: "danger",
 };
 
 const OrderStatusCard = ({ order, openDetail }) => {
   return (
     <div>
-      <Row className="status-card" onClick={()=>openDetail(order)}>
+      <Row className="status-card" onClick={() => openDetail(order)}>
         <Col xs={3}>
-          <img  src={order.items[0].product.image} alt="" height={96} />
+          <img src={order.items[0].product.image} alt="" height={96} />
         </Col>
         <Col md={6} xs={8} className="order-info">
           <div>
@@ -29,9 +30,7 @@ const OrderStatusCard = ({ order, openDetail }) => {
           <div>
             {order.items.length === 1
               ? `${order.items[0].product.name}`
-              : `${order.items[0].product.name} 외 ${
-                  order.items.length - 1
-                }개`}
+              : `${order.items[0].product.name} 외 ${order.items.length - 1}개`}
           </div>
           <div>₩ {currencyFormat(order.totalPrice)}</div>
         </Col>

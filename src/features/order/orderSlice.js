@@ -43,20 +43,20 @@ export const getOrder = createAsyncThunk(
   }
 );
 
-
-export const deleteOrder = createAsyncThunk(
-  "order/deleteOrder",
-  async (id, {dispatch, rejectWithValue}) =>{
-    try{
+export const cancelOrder = createAsyncThunk(
+  "order/cancelOrder",
+  async ({id, searchQuery}, { dispatch, rejectWithValue }) => {
+    try {
       const response = await api.delete(`/order/${id}`);
-      if(response.status != 200) throw new Error(response.error);
+      if (response.status != 200) throw new Error(response.error);
+      await dispatch(getOrder(searchQuery));
       return response.data;
-    } catch(error){
-      dispatch(showToastMessage({message: error.error, status: "error"}));
+    } catch (error) {
+      dispatch(showToastMessage({ message: error.error, status: "error" }));
       return rejectWithValue(error.error);
     }
   }
-)
+);
 
 export const getAllOrders = createAsyncThunk(
   "order/getAllOrders",
@@ -81,7 +81,7 @@ export const updateOrder = createAsyncThunk(
       dispatch(
         showToastMessage({ message: "주문 수정 완료", status: "success" })
       );
-      await dispatch(getAllOrders({page: data.page, pageSize: 10}));
+      await dispatch(getAllOrders({ page: data.page, pageSize: 10 }));
       return response.data;
     } catch (error) {
       dispatch(showToastMessage({ message: error.error, status: "error" }));
@@ -89,7 +89,6 @@ export const updateOrder = createAsyncThunk(
     }
   }
 );
-
 
 const orderSlice = createSlice({
   name: "order",
@@ -126,14 +125,14 @@ const orderSlice = createSlice({
         state.loading = false;
         state.error = action.payload;
       })
-      .addCase(deleteOrder.pending, (state) => {
+      .addCase(cancelOrder.pending, (state) => {
         state.loading = true;
       })
-      .addCase(deleteOrder.fulfilled, (state) => {
+      .addCase(cancelOrder.fulfilled, (state) => {
         state.loading = false;
         state.error = null;
       })
-      .addCase(deleteOrder.rejected, (state, action) => {
+      .addCase(cancelOrder.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
       })
