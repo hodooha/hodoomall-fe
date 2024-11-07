@@ -89,20 +89,13 @@ export const loginWithGoogle = createAsyncThunk(
   }
 );
 
-export const logout = createAsyncThunk(
-  "user/logout",
-  (_, dispatch) => {
-    sessionStorage.removeItem("token");
-    dispatch(getCartQty());
-  }
-)
-
 const userSlice = createSlice({
   name: "user",
   initialState,
   reducers: {
     logout(state) {
-      state.user = null;  
+      state.user = null;
+      sessionStorage.removeItem("token");
     },
   },
   extraReducers: (builder) => {

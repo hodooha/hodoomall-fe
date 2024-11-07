@@ -7,6 +7,7 @@ const badgeBg = {
   shipping: "warning",
   refund: "danger",
   delivered: "success",
+  canceled: "danger",
 };
 
 const OrderTable = ({ header, data, openEditForm }) => {

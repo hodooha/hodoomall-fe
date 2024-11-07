@@ -48,7 +48,7 @@ const PaymentPage = () => {
       setSelectedCoupon(coupon);
     } else {
       setDcPrice(totalPrice);
-      setSelectedCoupon("");
+      setSelectedCoupon(null);
     }
   };
 
@@ -83,7 +83,7 @@ const PaymentPage = () => {
               size: item.size.toLowerCase(),
             }
       ),
-      userCouponId: selectedCoupon.id || "",
+      userCouponId: selectedCoupon.id || null,
     };
     dispatch(createOrder({ data: data, navigate: navigate }));
   };

@@ -5,7 +5,7 @@ import "../AdminOrder.style.css"
 import { currencyFormat } from "../../../utils/number";
 import { updateOrder } from "../../../features/order/orderSlice";
 
-const ORDER_STATUS = ["preparing", "shipping", "delivered", "refund"];
+const ORDER_STATUS = ["preparing", "shipping", "delivered", "refund", "canceled"];
 
 const OrderDetailDialog = ({ open, handleClose, page }) => {
   const { selectedOrder } = useSelector((state) => state.order);

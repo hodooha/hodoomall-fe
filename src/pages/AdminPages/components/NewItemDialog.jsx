@@ -15,7 +15,7 @@ const InitialFormData = {
   image: "",
   description: "",
   category: [],
-  status: "active",
+  status: "disactive",
   price: 0,
 };
 const NewItemDialog = ({ mode, showDialog, setShowDialog }) => {

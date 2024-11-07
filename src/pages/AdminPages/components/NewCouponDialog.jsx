@@ -12,7 +12,7 @@ const InitialFormData = {
   minCost: "",
   duration: "",
   totalQty: "",
-  status:"active",
+  status:"disactive",
   image: ""
 };
 

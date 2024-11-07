@@ -38,7 +38,7 @@ const OrderStatusDetail = ({ open, handleClose, handleCancelOrder }) => {
               {selectedOrder.items.length > 0 &&
                 selectedOrder.items.map((item, index) => (
                   <tr key={index}>
-                    <td>{index+1}</td>
+                    <td>{index + 1}</td>
                     <td>{item.product.name}</td>
                     <td>{currencyFormat(item.price)}</td>
                     <td>{item.qty}</td>
@@ -52,9 +52,14 @@ const OrderStatusDetail = ({ open, handleClose, handleCancelOrder }) => {
             </tbody>
           </Table>
         </div>
-        <Button variant="danger" onClick={() => handleCancelOrder(selectedOrder)}>
-          주문취소
-        </Button>
+        {selectedOrder.status == "preparing" && (
+          <Button
+            variant="danger"
+            onClick={() => handleCancelOrder(selectedOrder)}
+          >
+            주문취소
+          </Button>
+        )}
       </Modal.Body>
     </Modal>
   );
