@@ -74,20 +74,22 @@ export const updateQty = createAsyncThunk(
 
 export const deleteCartItem = createAsyncThunk(
   "cart/deleteCartItem",
-  async (id, {dispatch, rejectWithValue}) => {
-    try{
-      const response = await api.delete(`/cart/${id}`);
-      if(response.status !== 200) throw new Error(response.error);
-      dispatch(showToastMessage({message: "카트 상품 삭제 완료", status: "success"}));
+  async (data, { dispatch, rejectWithValue }) => {
+    try {
+      const { productId, size } = data;
+      const response = await api.delete(`/cart/${productId}?size=${size}`);
+      if (response.status !== 200) throw new Error(response.error);
+      dispatch(
+        showToastMessage({ message: "카트 상품 삭제 완료", status: "success" })
+      );
       await dispatch(getCartList());
       return response.data;
-    }
-    catch(error){
+    } catch (error) {
       dispatch(showToastMessage({ message: error.error, status: "error" }));
       return rejectWithValue(error.error);
     }
   }
-)
+);
 
 const cartSlice = createSlice({
   name: "cart",

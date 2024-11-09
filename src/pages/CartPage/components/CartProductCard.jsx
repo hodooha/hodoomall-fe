@@ -10,22 +10,24 @@ const CartProductCard = ({ item }) => {
   const dispatch = useDispatch();
 
   const handleQtyChange = (value) => {
-    dispatch(updateQty({ id: item.productId.id, size: item.size, qty: value }));
+    dispatch(
+      updateQty({ productId: item.productId, size: item.size, qty: value })
+    );
   };
 
   const deleteCart = (item) => {
-    dispatch(deleteCartItem(item.productId.id));
+    dispatch(deleteCartItem({ productId: item.productId, size: item.size }));
   };
 
   return (
     <div className="product-card-cart">
       <Row>
         <Col md={2} xs={12}>
-          <img src={item.productId.image} width={112} />
+          <img src={item.product.image} width={112} />
         </Col>
         <Col md={10} xs={12}>
           <div className="display-flex space-between">
-            <h3>{item.productId.name}</h3>
+            <h3>{item.product.name}</h3>
             <button className="trash-button">
               <FontAwesomeIcon
                 icon={faTrash}
@@ -36,10 +38,10 @@ const CartProductCard = ({ item }) => {
           </div>
 
           <div>
-            <strong>₩ {currencyFormat(item.productId.price)}</strong>
+            <strong>₩ {currencyFormat(item.product.price)}</strong>
           </div>
           <div>Size: {item.size}</div>
-          <div>Total: ₩ {currencyFormat(item.productId.price * item.qty)}</div>
+          <div>Total: ₩ {currencyFormat(item.product.price * item.qty)}</div>
           <div>
             Quantity:
             <Form.Select

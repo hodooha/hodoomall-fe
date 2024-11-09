@@ -29,7 +29,7 @@ const MyPage = () => {
     productName: query.get("productName") || "",
   });
   const [keyword, setKeyword] = useState({
-    keywordType: "orderNum",
+    keywordType: "productName",
     keyword: "",
   });
   const { loading, orderList, totalPageNum } = useSelector(

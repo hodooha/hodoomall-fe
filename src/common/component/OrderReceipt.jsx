@@ -15,9 +15,9 @@ const OrderReceipt = ({ cartList, totalPrice, dcPrice }) => {
         <li>
           {cartList && cartList.map((item) => (
             <div className="display-flex space-between">
-              <div>{`${item.productId.name + item.size} X ${item.qty}`}</div>
+              <div>{`${item.product.name + item.size} X ${item.qty}`}</div>
 
-              <div>{currencyFormat(item.productId.price * item.qty)}</div>
+              <div>{currencyFormat(item.product.price * item.qty)}</div>
             </div>
           ))}
         </li>

@@ -28,7 +28,7 @@ const ProductDetailPage = () => {
       navigate("/login");
       return;
     }
-    dispatch(addToCart({ id, size }));
+    dispatch(addToCart({ productId: id, size: size }));
   };
   const selectSize = (value) => {
     setSize(value);

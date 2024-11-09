@@ -11,7 +11,6 @@ import { Link, useSearchParams } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { userActions } from "../../features/user/userSlice";
-import EventPopup from "./EventPopup";
 
 const Navbar = ({ user }) => {
   const dispatch = useDispatch();
@@ -30,7 +29,7 @@ const Navbar = ({ user }) => {
   const onCheckEnter = (event) => {
     if (event.key === "Enter") {
       if (event.target.value === "") {
-        return navigate(`/${searchType}`);
+        return navigate(`/${searchType}?page=1`);
       }
       navigate(`/${searchType}?name=${event.target.value}&page=1`);
     }
@@ -74,7 +73,6 @@ const Navbar = ({ user }) => {
 
   return (
     <div>
-      <EventPopup></EventPopup>
       {showSearchBox && (
         <div className="display-space-between mobile-search-box w-100">
           <div className="search display-space-between w-100">

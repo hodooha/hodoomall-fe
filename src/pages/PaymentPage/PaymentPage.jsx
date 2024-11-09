@@ -62,23 +62,23 @@ const PaymentPage = () => {
       items: cartList.map((item) =>
         couponCheck
           ? {
-              productId: item.productId.id,
+              productId: item.product.id,
               price:
                 selectedCoupon.coupon.type === "dcRate"
                   ? Math.round(
-                      (item.productId.price *
+                      (item.product.price *
                         (1 - selectedCoupon.coupon.dcAmount / 100)) /
                         10
                     ) * 10
                   : selectedCoupon.coupon.type === "dcPrice"
-                  ? item.productId.price - selectedCoupon.coupon.dcAmount
-                  : item.productId.price,
+                  ? item.product.price - selectedCoupon.coupon.dcAmount
+                  : item.product.price,
               qty: item.qty,
               size: item.size.toLowerCase(),
             }
           : {
-              productId: item.productId.id,
-              price: item.productId.price,
+              productId: item.product.id,
+              price: item.product.price,
               qty: item.qty,
               size: item.size.toLowerCase(),
             }
