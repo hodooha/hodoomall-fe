@@ -65,7 +65,7 @@ const ProductsPage = () => {
         onPageChange={handlePageClick}
         pageRangeDisplayed={5}
         pageCount={totalPageNum}
-        forcePage={query.get("page") - 1}
+        forcePage={(query.get("page") || 1) - 1}
         previousLabel="< previous"
         renderOnZeroPageCount={null}
         pageClassName="page-item"
