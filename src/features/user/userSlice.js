@@ -49,7 +49,7 @@ export const loginWithEmail = createAsyncThunk(
       const response = await api.post("/auth/login", { email, password });
       if (response.status !== 200) throw new Error(response.error);
       const { user } = response.data;
-      sessionStorage.setItem("token", user.token);
+      localStorage.setItem("token", user.token);
       dispatch(getCartQty());
       return user;
     } catch (error) {
@@ -95,7 +95,7 @@ const userSlice = createSlice({
   reducers: {
     logout(state) {
       state.user = null;
-      sessionStorage.removeItem("token");
+      localStorage.removeItem("token");
     },
   },
   extraReducers: (builder) => {
