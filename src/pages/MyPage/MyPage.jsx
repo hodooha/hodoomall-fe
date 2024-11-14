@@ -46,11 +46,11 @@ const MyPage = () => {
   const handleChange = (event) => {
     console.log(event.target.value);
     const { id, value } = event.target;
-    setSearchQuery({ ...searchQuery, [id]: value });
+    setSearchQuery({ ...searchQuery, [id]: value, page: 1 });
   };
 
   const handleKeyword = () => {
-    setSearchQuery({ ...searchQuery, [keyword.keywordType]: keyword.keyword });
+    setSearchQuery({ ...searchQuery, [keyword.keywordType]: keyword.keyword, page: 1 });
   };
 
   const onCheckEnter = (event) => {
@@ -93,9 +93,9 @@ const MyPage = () => {
     });
   };
 
-  useEffect(() => {
-    dispatch(getOrder({ ...searchQuery, pageSize: 5 }));
-  }, [query]);
+  // useEffect(() => {
+    
+  // }, [query]);
 
   useEffect(() => {
     dispatch(getUserCouponList());
@@ -114,6 +114,7 @@ const MyPage = () => {
     const params = new URLSearchParams(searchQuery);
     const queryString = params.toString();
     navigate("?" + queryString);
+    dispatch(getOrder({ ...searchQuery, pageSize: 5 }));
   }, [searchQuery]);
 
   if (!user) {

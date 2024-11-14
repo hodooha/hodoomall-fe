@@ -10,7 +10,7 @@ import {
 import { Link, useSearchParams } from "react-router-dom";
 import { useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { userActions } from "../../features/user/userSlice";
+import { logout } from "../../features/user/userSlice";
 
 const Navbar = ({ user }) => {
   const dispatch = useDispatch();
@@ -34,8 +34,8 @@ const Navbar = ({ user }) => {
       navigate(`/${searchType}?name=${event.target.value}&page=1`);
     }
   };
-  const logout = () => {
-    dispatch(userActions.logout());
+  const handelLogout = () => {
+    dispatch(logout());
     navigate("/product?page=1");
   };
 
@@ -125,7 +125,7 @@ const Navbar = ({ user }) => {
         <div>
           <div className="display-flex">
             {user ? (
-              <div onClick={logout} className="nav-icon">
+              <div onClick={handelLogout} className="nav-icon">
                 <FontAwesomeIcon icon={faUser} />
                 <span className="mobile-hide" style={{ cursor: "pointer" }}>
                   로그아웃

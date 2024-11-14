@@ -1,4 +1,5 @@
 import axios from "axios";
+
 // 상황따라 주소 다름
 const LOCAL_BACKEND = process.env.REACT_APP_LOCAL_BACKEND;
 const PROD_BACKEND = process.env.REACT_APP_PROD_BACKEND;
@@ -9,6 +10,7 @@ let refreshSubscribers = [];
 
 const api = axios.create({
   baseURL: `${LOCAL_BACKEND}`,
+  withCredentials: true,
   headers: {
     "Content-Type": "application/json",
     authorization: `Bearer ${localStorage.getItem("token")}`,
@@ -54,6 +56,8 @@ api.interceptors.response.use(
           onRefreshed(token);
           return api(originalRequest);
         } catch (refreshError) {
+          localStorage.removeItem("token");          
+          window.location.href = "/";
           return Promise.reject(refreshError);
         } finally {
           isRefreshing = false;

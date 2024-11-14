@@ -80,7 +80,7 @@ export const loginWithGoogle = createAsyncThunk(
       const response = await api.post("/auth/google", { token });
       if (response.status !== 200) throw new Error(response.error);
       const { user } = response.data;
-      sessionStorage.setItem("token", user.token);
+      localStorage.setItem("token", user.token);
       dispatch(getCartQty());
       return user;
     } catch (error) {
@@ -89,15 +89,25 @@ export const loginWithGoogle = createAsyncThunk(
   }
 );
 
+export const logout = createAsyncThunk(
+  "user/logout", 
+  async (_, rejectWithValue) => {
+    try{
+      const response = await api.get("/users/logout");
+      if(response.status !== 200) throw new Error(response.error);
+      localStorage.removeItem("token");
+      return response;
+    } catch(error){
+      return rejectWithValue(error.error);
+    }
+
+  }
+)
+
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {
-    logout(state) {
-      state.user = null;
-      localStorage.removeItem("token");
-    },
-  },
+  reducers: {},
   extraReducers: (builder) => {
     builder
       .addCase(registerUser.pending, (state) => {
@@ -133,6 +143,7 @@ const userSlice = createSlice({
       })
       .addCase(loginWithToken.rejected, (state) => {
         state.loading = false;
+        state.user = null;
       })
       .addCase(loginWithGoogle.pending, (state) => {
         state.loading = true;
@@ -145,7 +156,21 @@ const userSlice = createSlice({
       .addCase(loginWithGoogle.rejected, (state, action) => {
         state.loading = false;
         state.error = action.payload;
-      });
+      })
+      .addCase(logout.pending, (state) => {
+        state.loading = true;
+      })
+      .addCase(logout.fulfilled, (state, action) => {
+        state.loading = false;
+        state.user = null;
+        state.error = null;
+      })
+      .addCase(logout.rejected, (state, action) => {
+        state.loading = false;
+        state.error = action.payload;
+      })
+
+      ;
   },
 });
 
