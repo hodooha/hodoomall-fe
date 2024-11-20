@@ -13,7 +13,7 @@
 
 <div align="center"><strong>React와 Spring Boot를 사용하여 RESTful API를 구현한 반려견 용품 쇼핑몰 프로젝트입니다.</strong></div>
 
-<div align="center"><strong><a href="https://github.com/hodooha/hodoomall-be">Backend로 이동</a></strong></div>
+<div align="center"><strong><a href="https://github.com/hodooha/hodoomall-be" target="_blank">Backend로 이동</a></strong></div>
 
 <br>
 
