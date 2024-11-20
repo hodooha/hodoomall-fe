@@ -130,6 +130,5 @@
 * Redux Thunk를 사용하여 비동기 데이터 처리를 간소화하고 상태 변경에 따른 UI 업데이트를 최적화했습니다.
 
 
-<img src="https://github.com/user-attachments/assets/a82bbb36-aee5-4e88-b9af-cc080b9fe70f" style="width: 100%">
 <br><br>
 
