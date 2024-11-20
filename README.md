@@ -47,12 +47,7 @@
 ### DB
 **DB : MongoDB, Redis, RabbitMQ(Messaging)**
 
-[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1724372982469?alt=media&token=1d7b420d-0ecf-4d5b-b32e-b895214c15f4)](https://github.com/msdio/stackticon) <br><br>
-
-## &#127912; ERD
-<img src="https://github.com/user-attachments/assets/97b9faa4-f853-4a46-b7a7-2ad154836583">
-<br><br>
-
+[![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1732073018693?alt=media&token=099c896a-0267-4249-b9e3-0fcd17890cac)](https://github.com/msdio/stackticon) <br><br>
 
 ## &#128187; 구현 결과  <br>
 - [X] **강성현 : 우동 소식, 우동 모임 담당**<br>
