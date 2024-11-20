@@ -49,21 +49,94 @@
 
 [![stackticon](https://firebasestorage.googleapis.com/v0/b/stackticon-81399.appspot.com/o/images%2F1732073018693?alt=media&token=099c896a-0267-4249-b9e3-0fcd17890cac)](https://github.com/msdio/stackticon) <br><br>
 
-## &#128187; 구현 결과  <br>
-- [X] **강성현 : 우동 소식, 우동 모임 담당**<br>
-• 우동 소식: 검색, 인기글, 광고, 좋아요, 댓글 등의 기능<br>
-• 우동 모임: 모임 기록, 모임 일정, 모임 앨범, 모임 멤버, 가입 신청자 관리, 채팅 등의 기능<br>
+## &#128187; 적용 기술 및 주요 구현 기능  <br>
+- [X] **Spring Security, JWT, OAuth2, Redis - 인증 및 권한 관리**<br>
+<ul>
+<li>Spring Security, JWT를 사용하여 인증 및 인가를 구현했고, OAuth2로 구글 로그인을 추가했습니다.</li>
+<li>Redis 기반 Refresh Token 관리와 HttpOnly 쿠키를 활용하여 Replay Attack을 방지하고 인증 시스템의 보안을 강화했습니다.</li>
+<li>TTL을 설정하여 Redis에 저장된 만료된 토큰을 자동으로 삭제하고, Access Token 갱신 속도를 최적화하여 성능을 개선했습니다.</li>
+<li>Refresh Token Rotation(RTR)기법을 적용하여 탈취된 Refresh Token의 재사용을 차단하여 보안성을 강화했습니다.</li>
 <br><br>
+</ul>
 
-- [x] **김재식 : 회원가입, 마이페이지, 고객센터 담당**<br>
-•회원가입 : 일반회원, 판매자, 구글 및 카카오 등 소셜 회원가입<br>
-•마이페이지 : 회원정보 변경, 활동기록 조회, 쪽지, 알림 등<br>
-•고객센터 : 자주 묻는 질문, 문의 및 답변 시스템, AI챗봇<br>
-<br><br>
+- [x] **Redis, RabbitMQ - 선착순 쿠폰 발급**<br>
+<ul>
+<li>쿠폰 수량 관리를 Redis 캐시로 구현하고 Spring Scheduler로 DB와 동기화하여 응답시간을 단축하고 성능을 개선했습니다.</li>
+<li>쿠폰 발행을 RabbitMQ 메시지큐를 사용하여 비동기 처리함으로써 동시성 충돌을 피하고 안정성을 높였습니다.</li>
+</ul>
 
-- [x] **윤정해 : 땡처리, 관리자페이지 담당**<br>
-• 땡처리 : 검색, 정렬옵션, 상세조회, 삭제, 마감, 신고 등의 기능<br>
-• 관리자페이지 : 회원관리, 신고관리, 판매자관리, 블랙리스트 관리, 공지사항 등의 기능<br>
+ <h5>[구현결과]</h5>
+                    <h5>
+                      쿠폰 발급 부하테스트 (Thread: 100, Ramp-up: 1, Loop: 10)
+                    </h5>
+                    <div class="table-wrapper">
+                      <table>
+                        <thead>
+                          <tr>
+                            <th rowspan="2">구분</th>
+                            <th colspan="4">응답시간(m/s)</th>
+                            <th rowspan="2">처리량<br />(req/sec)</th>
+                          </tr>
+                          <tr>
+                            <th>평균</th>
+                            <th>최소</th>
+                            <th>최대</th>
+                            <th>표준편차</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>기존</td>
+                            <td>501</td>
+                            <td>10</td>
+                            <td>4,973</td>
+                            <td>784.56</td>
+                            <td>125.3</td>
+                          </tr>
+                          <tr>
+                            <td>Redis</td>
+                            <td>125</td>
+                            <td>8</td>
+                            <td>355</td>
+                            <td>73.15</td>
+                            <td>430.7</td>
+                          </tr>
+                          <tr>
+                            <td>RabbitMQ</td>
+                            <td>210</td>
+                            <td>10</td>
+                            <td>560</td>
+                            <td>121.13</td>
+                            <td>315.3</td>
+                          </tr>
+                          <tr style="background-color: yellow">
+                            <td>Redis + RabbitMQ</td>
+                            <td>181</td>
+                            <td>8</td>
+                            <td>712</td>
+                            <td>126.06</td>
+                            <td>340.8</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                      <ul>
+                        <li>
+                          Redis 캐싱 적용으로 평균 응답 시간을 501ms에서 125ms로
+                          감소
+                        </li>
+                        <li>
+                          RabbitMQ를 통한 비동기 처리로 처리량을
+                          125.3req/sec에서 340.8req/sec로 개선
+                        </li>
+                        <li>
+                          캐싱만 적용했을 때 성능 수치는 가장 좋았지만, 메시지
+                          큐를 함께 사용하여 동시성 문제를 해결하고 안정성을
+                          높이기 위해
+                          <span style="font-weight: bold"
+                            >최종적으로 캐싱과 메시지 큐를 함께 적용</span
+                          >
+                        </li>
+                      </ul>
 <br><br>
 
 - [x] **하지은 : 대여/나눔 담당**<br>
