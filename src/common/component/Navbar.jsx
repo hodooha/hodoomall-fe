@@ -186,7 +186,7 @@ const Navbar = ({ user }) => {
 
       <div className="nav-logo">
         <Link to="/product?page=1">
-          <img width={500} src="/image/logo.png" alt="logo.png" />
+          <img width={300} src="/image/hodoomall-logo.png" alt="logo.png" />
         </Link>
       </div>
       <div className="nav-menu-area">

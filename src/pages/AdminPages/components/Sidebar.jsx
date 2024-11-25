@@ -15,7 +15,7 @@ const Sidebar = () => {
     return (
       <div>
         <Link to="/">
-          <img width={250} src="/image/logo.png" alt="logo.png" />
+          <img width={250} src="/image/hodoomall-logo.png" alt="logo.png" />
         </Link>
         <div className="sidebar-title">Admin Account</div>
         <ul className="sidebar-area">
@@ -48,7 +48,7 @@ const Sidebar = () => {
       <Navbar bg="light" expand={false} className="mobile-sidebar-toggle">
         <Container fluid>
           <Navbar.Brand href="/">
-            <img width={250} src="/image/logo.png" alt="logo.png" />
+            <img width={250} src="/image/hodoomall-logo.png" alt="logo.png" />
           </Navbar.Brand>
           <Navbar.Toggle onClick={() => setShow(true)} />
           <Navbar.Offcanvas placement="start" className="sidebar" show={show}>
